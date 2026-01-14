@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BARBEARIA SOARES</title>
+    <meta
+      name="description"
+      content="Salão de beleza especializado em cortes, coloração e tratamentos. Agende seu horário pelo WhatsApp."
+    />
+
+    <!-- Tailwind CSS (Estilização Moderna) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/style/style.css" />
+
+    <!-- Fontes Google (Inter para texto, Playfair Display para títulos) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body
+    class="text-gray-800 bg-gray-50 antialiased selection:bg-amber-200 selection:text-amber-900"
+  >
+    <!-- Configuração do Número do WhatsApp -->
+    <script>
+      // ATENÇÃO: Mude este número para o número real do salão
+      const WHATSAPP_NUMBER = "5588994202290";
+    </script>
+
+    <!-- Navigation -->
+    <nav
+      id="navbar"
+      class="fixed w-full z-50 transition-all duration-300 transparent-nav"
+    >
+      <div
+        class="container mx-auto px-4 md:px-8 flex justify-between items-center"
+      >
+        <!-- Logo -->
+        <span
+          id="logo-text"
+          class="text-amber-500 transition-colors group-hover:text-amber-400 text-2xl font-serif font-bold tracking-widest flex items-center gap-1 py-4"
+          >BARBEARIA SOARES</span
+        >
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex space-x-8 items-center">
+          <a
+            href="#sobre"
+            class="nav-link text-sm font-medium uppercase tracking-wide text-gray-200 hover:text-amber-500 transition-colors"
+            >Sobre</a
+          >
+          <a
+            href="#servicos"
+            class="nav-link text-sm font-medium uppercase tracking-wide text-gray-200 hover:text-amber-500 transition-colors"
+            >Serviços</a
+          >
+          <a
+            href="#galeria"
+            class="nav-link text-sm font-medium uppercase tracking-wide text-gray-200 hover:text-amber-500 transition-colors"
+            >Galeria</a
+          >
+          <a
+            href="#Pagamento"
+            class="nav-link text-sm font-medium uppercase tracking-wide text-gray-200 hover:text-amber-500 transition-colors"
+            >Pagamento</a
+          >
+          <a
+            href="#contato"
+            class="nav-link text-sm font-medium uppercase tracking-wide text-gray-200 hover:text-amber-500 transition-colors"
+            >Contato</a
+          >
+          <a
+            href="#agendar"
+            class="bg-amber-600 hover:bg-amber-700 text-white px-6 py-2 rounded-full font-medium transition-transform transform hover:scale-105 shadow-lg shadow-amber-600/20"
+          >
+            Agendar Agora
+          </a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button
+          id="mobile-menu-btn"
+          class="md:hidden focus:outline-none text-white"
+        >
+          <i data-lucide="menu" class="w-7 h-7"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Menu Overlay -->
+      <div
+        id="mobile-menu"
+        class="fixed inset-0 bg-gray-900/95 backdrop-blur-lg z-40 flex flex-col items-center justify-center space-y-8 transition-transform duration-300 translate-x-full md:hidden h-screen top-0"
+      >
+        <button
+          id="close-menu-btn"
+          class="absolute top-6 right-6 text-white p-2"
+        >
+          <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+        <a
+          href="#sobre"
+          class="mobile-link text-white text-2xl font-serif hover:text-amber-500 transition-colors"
+          >Sobre</a
+        >
+        <a
+          href="#servicos"
+          class="mobile-link text-white text-2xl font-serif hover:text-amber-500 transition-colors"
+          >Serviços</a
+        >
+        <a
+          href="#galeria"
+          class="mobile-link text-white text-2xl font-serif hover:text-amber-500 transition-colors"
+          >Galeria</a
+        >
+        <a
+          href="#contato"
+          class="mobile-link text-white text-2xl font-serif hover:text-amber-500 transition-colors"
+          >Contato</a
+        >
+        <a
+          href="#agendar"
+          class="bg-amber-600 text-white px-8 py-3 rounded-full text-lg font-medium shadow-xl mt-4"
+        >
+          Agendar Horário
+        </a>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section
+      class="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden"
+    >
+      <div class="absolute inset-0 z-0">
+        <img
+          src="/img/Logo-barbearia.jpg"
+          alt="Salão de luxo"
+          class="w-full h-full object-cover"
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80"
+        ></div>
+      </div>
+
+      <div
+        class="container mx-auto px-4 relative z-10 text-center text-white pt-20"
+      >
+        <h2
+          class="text-amber-400 font-medium tracking-[0.2em] mb-4 text-sm md:text-base uppercase animate-fade-in-up"
+        >
+          Estilo & Sofisticação
+        </h2>
+        <h1
+          class="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight"
+        >
+          Realce sua <br />
+          <span
+            class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500"
+            >Beleza Única</span
+          >
+        </h1>
+        <p
+          class="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light"
+        >
+          Especialista em cortes, personalizados para você brilhar.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="#agendar"
+            class="bg-amber-600 hover:bg-amber-700 text-white px-8 py-4 rounded-full font-bold text-lg transition-all transform hover:-translate-y-1 shadow-[0_10px_20px_rgba(217,119,6,0.3)] flex items-center justify-center gap-2"
+          >
+            <i data-lucide="calendar" class="w-5 h-5"></i> Agendar Horário
+          </a>
+          <a
+            href="#servicos"
+            class="bg-transparent border border-white hover:bg-white hover:text-gray-900 text-white px-8 py-4 rounded-full font-bold text-lg transition-all"
+          >
+            Nossos Serviços
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="sobre" class="py-20 md:py-32 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
+          <div class="w-full md:w-1/2 relative">
+            <div class="relative z-10 rounded-2xl overflow-hidden shadow-2xl">
+              <img
+                src="/img/imagem cabelereiro.jpg"
+                alt="Cabeleireiro"
+                class="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"
+              />
+            </div>
+            <div
+              class="absolute -bottom-6 -right-6 w-48 h-48 bg-amber-100 rounded-full -z-0"
+            ></div>
+            <div
+              class="absolute -top-6 -left-6 w-32 h-32 border-4 border-amber-600/20 rounded-lg -z-0"
+            ></div>
+          </div>
+
+          <div class="w-full md:w-1/2">
+            <h3
+              class="text-amber-600 font-bold uppercase tracking-wider text-sm mb-2"
+            >
+              Sobre Mim
+            </h3>
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Mais de 10 anos de <br />
+              excelência
+            </h2>
+            <p class="text-gray-600 mb-6 leading-relaxed text-lg">
+              No Barbearia Soares, acreditamos que o cabelo é a moldura do rosto
+              e a expressão da sua personalidade. Fundado por especialista
+              apaixonado, nossa barbearia oferece uma experiência única de
+              cuidado e relaxamento.
+            </p>
+            <div class="grid grid-cols-2 gap-6 mt-8">
+              <div class="flex items-start gap-3">
+                <i
+                  data-lucide="check-circle"
+                  class="text-amber-600 mt-1 w-5 h-5 flex-shrink-0"
+                ></i>
+                <div>
+                  <h4 class="font-bold text-gray-900">
+                    Profissional Certificado
+                  </h4>
+                  <p class="text-sm text-gray-500">
+                    Anos de experiência no mercado
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <i
+                  data-lucide="check-circle"
+                  class="text-amber-600 mt-1 w-5 h-5 flex-shrink-0"
+                ></i>
+                <div>
+                  <h4 class="font-bold text-gray-900">Produtos Premium</h4>
+                  <p class="text-sm text-gray-500">
+                    As melhores marcas mundiais
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="servicos" class="py-20 bg-gray-900 text-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2
+            class="text-amber-500 font-bold uppercase tracking-wider text-sm mb-2"
+          >
+            Nossos Serviços
+          </h2>
+          <h3 class="text-4xl font-bold font-serif">Menu de Serviços</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- Service 1 -->
+          <div
+            class="group bg-gray-800 p-8 rounded-2xl hover:bg-gray-700 transition-colors border border-gray-700 hover:border-amber-600/50"
+          >
+            <div
+              class="w-14 h-14 bg-gray-900 rounded-full flex items-center justify-center text-amber-500 mb-6 group-hover:scale-110 transition-transform"
+            >
+              <i data-lucide="scissors" class="w-8 h-8"></i>
+            </div>
+            <h4 class="text-xl font-bold mb-3 font-serif">Corte & Estilo</h4>
+            <p class="text-gray-400 mb-6 text-sm leading-relaxed">
+              Cortes modernos, visagismo e finalização personalizada.
+            </p>
+            <div
+              class="flex items-center justify-between mt-auto pt-4 border-t border-gray-700/50"
+            >
+              <span class="text-amber-500 font-bold text-sm"
+                >A partir de R$ 25</span
+              >
+            </div>
+          </div>
+
+          <!-- Service 2 -->
+          <div
+            class="group bg-gray-800 p-8 rounded-2xl hover:bg-gray-700 transition-colors border border-gray-700 hover:border-amber-600/50"
+          >
+            <div
+              class="w-14 h-14 bg-gray-900 rounded-full flex items-center justify-center text-amber-500 mb-6 group-hover:scale-110 transition-transform"
+            >
+              <i data-lucide="sparkles" class="w-8 h-8"></i>
+            </div>
+            <h4 class="text-xl font-bold mb-3 font-serif">Coloração</h4>
+            <p class="text-gray-400 mb-6 text-sm leading-relaxed">
+              Mechas, luzes, balayage e coloração global com proteção.
+            </p>
+            <div
+              class="flex items-center justify-between mt-auto pt-4 border-t border-gray-700/50"
+            >
+              <span class="text-amber-500 font-bold text-sm"
+                >A partir de R$ 180</span
+              >
+            </div>
+          </div>
+
+          <!-- Service 3 -->
+          <div
+            class="group bg-gray-800 p-8 rounded-2xl hover:bg-gray-700 transition-colors border border-gray-700 hover:border-amber-600/50"
+          >
+            <div
+              class="w-14 h-14 bg-gray-900 rounded-full flex items-center justify-center text-amber-500 mb-6 group-hover:scale-110 transition-transform"
+            >
+              <i data-lucide="droplet" class="w-8 h-8"></i>
+            </div>
+            <h4 class="text-xl font-bold mb-3 font-serif">Tratamentos</h4>
+            <p class="text-gray-400 mb-6 text-sm leading-relaxed">
+              Hidratação profunda, cronograma capilar e reconstrução.
+            </p>
+            <div
+              class="flex items-center justify-between mt-auto pt-4 border-t border-gray-700/50"
+            >
+              <span class="text-amber-500 font-bold text-sm"
+                >A partir de R$ 120</span
+              >
+            </div>
+          </div>
+
+          <!-- Service 4 -->
+          <div
+            class="group bg-gray-800 p-8 rounded-2xl hover:bg-gray-700 transition-colors border border-gray-700 hover:border-amber-600/50"
+          >
+            <div
+              class="w-14 h-14 bg-gray-900 rounded-full flex items-center justify-center text-amber-500 mb-6 group-hover:scale-110 transition-transform"
+            >
+              <i data-lucide="user" class="w-8 h-8"></i>
+            </div>
+            <h4 class="text-xl font-bold mb-3 font-serif">Penteados</h4>
+            <p class="text-gray-400 mb-6 text-sm leading-relaxed">
+              Para festas, casamentos e ocasiões especiais.
+            </p>
+            <div
+              class="flex items-center justify-between mt-auto pt-4 border-t border-gray-700/50"
+            >
+              <span class="text-amber-500 font-bold text-sm"
+                >A partir de R$ 150</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="galeria" class="py-20 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+          <div>
+            <h2
+              class="text-amber-600 font-bold uppercase tracking-wider text-sm mb-2"
+            >
+              Portfólio
+            </h2>
+            <h3 class="text-4xl font-bold font-serif text-gray-900">
+              Trabalhos Com Qualidade
+            </h3>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="relative group overflow-hidden rounded-xl aspect-[3/4]">
+            <img
+              src=""
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              alt="Cabelo 1"
+            />
+          </div>
+          <div class="relative group overflow-hidden rounded-xl aspect-[3/4]">
+            <img
+              src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              alt="Cabelo 2"
+            />
+          </div>
+          <div class="relative group overflow-hidden rounded-xl aspect-[3/4]">
+            <img
+              src=""
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              alt="Cabelo 3"
+            />
+          </div>
+          <div class="relative group overflow-hidden rounded-xl aspect-[3/4]">
+            <img
+              src="https://images.unsplash.com/photo-1492106087820-71f171d7d507?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              alt="Cabelo 4"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Seção de Formas de Pagamento (Adicionada) -->
+    <section id="Pagamento" class="py-20 bg-amber-50 border-t border-amber-100">
+      <div class="container mx-auto px-4">
+        <div
+          class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16 text-center"
+        >
+          <div class="md:text-right">
+            <h3
+              class="text-amber-600 font-bold uppercase tracking-wider text-sm mb-1"
+            >
+              Facilidade
+            </h3>
+            <h2 class="text-2xl font-bold font-serif text-gray-900">
+              Formas de Pagamento
+            </h2>
+            <p class="text-gray-500 text-sm mt-1">
+              Pague Antes Para Confirmação do Agendamento
+            </p>
+          </div>
+
+          <div class="hidden md:block w-px h-16 bg-amber-200"></div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- PIX -->
+            <div
+              class="group bg-white p-8 rounded-2xl shadow-sm border border-amber-100 hover:shadow-lg transition-all hover:scale-105 cursor-pointer"
+            >
+              <div class="flex flex-col items-center text-center">
+                <div
+                  class="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center text-amber-600 mb-6 group-hover:scale-110 transition-transform"
+                >
+                  <i data-lucide="qr-code" class="w-8 h-8"></i>
+                </div>
+                <h4 class="text-xl font-bold mb-3 text-gray-900">PIX</h4>
+                <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                  Pagamento instantâneo
+                </p>
+                <span
+                  class="inline-flex items-center text-xs font-medium text-amber-600 bg-amber-50 px-3 py-1 rounded-full"
+                >
+                  <i data-lucide="zap" class="w-3 h-3 mr-1"></i> Mais rápido
+                </span>
+              </div>
+            </div>
+
+            <!-- Cartões -->
+            <div
+              class="group bg-white p-8 rounded-2xl shadow-sm border border-amber-100 hover:shadow-lg transition-all hover:scale-105 cursor-pointer"
+            >
+              <div class="flex flex-col items-center text-center">
+                <div
+                  class="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center text-amber-600 mb-6 group-hover:scale-110 transition-transform"
+                >
+                  <i data-lucide="credit-card" class="w-8 h-8"></i>
+                </div>
+                <h4 class="text-xl font-bold mb-3 text-gray-900">Cartões</h4>
+                <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                  Aceitamos as principais bandeiras (Débito e Crédito).
+                </p>
+                <div class="flex gap-2 mt-2">
+                  <span class="text-xs font-medium text-gray-500"
+                    >Visa • Master • Elo</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Dinheiro -->
+            <div
+              class="group bg-white p-8 rounded-2xl shadow-sm border border-amber-100 hover:shadow-lg transition-all hover:scale-105 cursor-pointer"
+            >
+              <div class="flex flex-col items-center text-center">
+                <div
+                  class="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center text-amber-600 mb-6 group-hover:scale-110 transition-transform"
+                >
+                  <i data-lucide="banknote" class="w-8 h-8"></i>
+                </div>
+                <h4 class="text-xl font-bold mb-3 text-gray-900">Dinheiro</h4>
+                <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                  Pagamento em espécie realizado no local.
+                </p>
+                <span
+                  class="inline-flex items-center text-xs font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded-full"
+                >
+                  <i data-lucide="check-circle" class="w-3 h-3 mr-1"></i>
+                  Tradicional
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Booking Section -->
+    <section
+      id="agendar"
+      class="py-20 bg-gray-900 text-white relative overflow-hidden"
+    >
+      <div
+        class="absolute top-0 right-0 w-1/2 h-full bg-gray-800/30 transform skew-x-12 translate-x-1/4"
+      ></div>
+
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="flex flex-col lg:flex-row gap-16 items-center">
+          <div class="w-full lg:w-1/2">
+            <h2
+              class="text-amber-500 font-bold uppercase tracking-wider text-sm mb-2"
+            >
+              Agendamento Online
+            </h2>
+            <h3 class="text-4xl md:text-5xl font-bold font-serif mb-6">
+              Garanta seu horário com facilidade
+            </h3>
+            <p class="text-gray-400 text-lg mb-8 leading-relaxed">
+              Preencha o formulário e você será redirecionada automaticamente
+              para o nosso WhatsApp com todas as informações prontas. Nossa
+              equipe confirmará a disponibilidade em instantes.
+            </p>
+
+            <div
+              class="bg-gray-800/50 p-6 rounded-xl border border-gray-700 mt-8"
+            >
+              <h4 class="flex items-center gap-2 font-bold mb-4 text-amber-500">
+                <i data-lucide="clock" class="w-5 h-5"></i> Horários de
+                Funcionamento
+              </h4>
+              <ul class="space-y-2 text-sm text-gray-300">
+                <li class="flex justify-between border-b border-gray-700 pb-2">
+                  <span>Segunda a Sábado</span>
+                  <span>08:00 - 17:00</span>
+                </li>
+                <li class="flex justify-between border-b border-gray-700 pb-2">
+                  <span>Domingo</span>
+                  <span>Fechado</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div
+            class="w-full lg:w-1/2 bg-white text-gray-900 rounded-2xl p-8 md:p-10 shadow-2xl"
+          >
+            <form id="booking-form" class="space-y-6">
+              <!-- Campo Nome - CORRIGIDO -->
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">
+                  Seu Nome
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  class="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all placeholder-gray-400"
+                  placeholder="Digite seu nome completo"
+                  autocomplete="off"
+                  autocorrect="off"
+                />
+              </div>
+
+              <!-- Campo Serviço -->
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">
+                  Serviço Desejado
+                </label>
+                <select
+                  id="service"
+                  name="service"
+                  class="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all"
+                >
+                  <option value="">Selecione um serviço</option>
+                  <option value="Corte de Cabelo">Corte de Cabelo</option>
+                  <option value="Barba">Barba</option>
+                  <option value="Outros">Outros</option>
+                </select>
+              </div>
+
+              <!-- Data Automática - CORRIGIDO (sempre hoje até 17h) -->
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">
+                  Data do Agendamento
+                </label>
+                <div
+                  id="date-container"
+                  class="p-3 bg-amber-50 border border-amber-200 rounded-lg"
+                >
+                  <div class="flex items-center gap-2">
+                    <i
+                      data-lucide="calendar"
+                      class="text-amber-600 w-5 h-5"
+                    ></i>
+                    <span id="date-display" class="font-medium text-gray-900">
+                      Calculando data...
+                    </span>
+                    <span
+                      id="date-badge"
+                      class="ml-auto text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded"
+                    >
+                      Automático
+                    </span>
+                  </div>
+                </div>
+                <input type="hidden" id="date" name="date" required />
+                <p class="text-xs text-gray-500 mt-1">
+                  Data automática: Hoje até as 17h. Se for após, será amanhã.
+                </p>
+              </div>
+
+              <!-- Horário com Formatação Inteligente -->
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">
+                  Horário Preferencial
+                </label>
+                <div class="relative">
+                  <input
+                    type="text"
+                    id="time-input"
+                    name="time-input"
+                    class="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all placeholder-gray-400"
+                    placeholder="Digite o horário desejado"
+                    autocomplete="off"
+                    inputmode="numeric"
+                  />
+                  <div
+                    class="absolute right-3 top-1/2 transform -translate-y-1/2"
+                  ></div>
+                </div>
+                <input type="hidden" id="time" name="time" required />
+              </div>
+
+              <!-- Botão de Envio -->
+              <button
+                type="submit"
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-all transform hover:-translate-y-1"
+              >
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                  class="w-6 h-6"
+                  alt="WhatsApp"
+                />
+                Solicitar via WhatsApp
+              </button>
+
+              <p class="text-center text-xs text-gray-400 mt-2">
+                *O horário será confirmado pelo profissional em até 10 minutos.
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Location -->
+    <section id="contato" class="py-20 bg-white">
+      <div class="container mx-auto px-4 text-center mb-10">
+        <h2 class="text-4xl font-bold font-serif text-gray-900 mb-4">
+          Nossa Localização
+        </h2>
+        <p class="text-gray-600">
+          Venha nos fazer uma visita e tomar um café conosco.
+        </p>
+      </div>
+
+      <div class="w-full h-[400px] bg-gray-200 relative">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.785007425566!2d-39.473539!3d-7.889999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7a5c7f6b3b3b3b3b%3A0x3b3b3b3b3b3b3b3b!2sR.%20Padre%20C%C3%ADcero%2C%20185%20-%20Centro%2C%20Miss%C3%A3o%20Velha%20-%20CE%2C%2063200-000!5e0!3m2!1spt-BR!2sbr!4v1630000000000!5m2!1spt-BR!2sbr"
+          width="100%"
+          height="100%"
+          style="border: 0"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          class="grayscale hover:grayscale-0 transition-all duration-500"
+        ></iframe>
+
+        <div
+          class="absolute bottom-4 left-4 bg-white p-4 rounded-lg shadow-lg max-w-xs text-left hidden md:block"
+        >
+          <div class="flex items-start gap-3">
+            <i
+              data-lucide="map-pin"
+              class="text-amber-600 mt-1 flex-shrink-0 w-5 h-5"
+            ></i>
+            <div>
+              <h4 class="font-bold text-gray-900">Barbearia Soares</h4>
+              <p class="text-sm text-gray-600">
+                Rua Padre Cicero, 185 - Centro
+              </p>
+              <p class="text-sm text-gray-600">Missão velha - CE</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-16 border-t border-gray-800">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <!-- Brand -->
+          <div class="flex flex-col items-start">
+            <div
+              class="text-3xl font-serif font-bold tracking-widest flex items-center gap-1 mb-6"
+            >
+              <span class="text-amber-500">BARBEARIA SOARES</span>
+            </div>
+            <p class="text-gray-400 text-sm leading-relaxed mb-6">
+              Transformando visual e elevando autoestima através de serviços de
+              beleza de alta performance.
+            </p>
+            <div class="flex gap-4">
+              <a
+                href="https://www.instagram.com/soares_barbearia7/"
+                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-amber-600 transition-colors"
+              >
+                <i data-lucide="instagram" class="w-5 h-5"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Links -->
+          <div>
+            <h4 class="text-lg font-bold mb-6 text-amber-500">Links Rápidos</h4>
+            <ul class="space-y-3 text-gray-400">
+              <li>
+                <a href="#sobre" class="hover:text-white transition-colors"
+                  >Sobre Nós</a
+                >
+              </li>
+              <li>
+                <a href="#servicos" class="hover:text-white transition-colors"
+                  >Serviços</a
+                >
+              </li>
+              <li>
+                <a href="#galeria" class="hover:text-white transition-colors"
+                  >Portfólio</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Contact -->
+          <div>
+            <h4 class="text-lg font-bold mb-6 text-amber-500">Contato</h4>
+            <ul class="space-y-4 text-gray-400">
+              <li class="flex items-center gap-3">
+                <i data-lucide="phone" class="text-amber-600 w-5 h-5"></i>
+                <span>(88) 99251-8563</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i
+                  data-lucide="map-pin"
+                  class="text-amber-600 mt-1 w-5 h-5"
+                ></i>
+                <span>Rua Padre Cicero N 185</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-600 text-sm flex flex-col md:flex-row justify-between items-center"
+        >
+          <p>&copy; 2026 Barbearia Soares. Todos os direitos reservados.</p>
+          <p class="mt-2 md:mt-0 flex items-center gap-1">
+            Desenvolvido por
+            <i
+              data-lucide="star"
+              class="w-3 h-3 text-amber-600 fill-current"
+            ></i>
+            excelência
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/src/script.js"></script>
+    <script src="/src/animações.js"></script>
+  </body>
+</html>

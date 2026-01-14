@@ -1,0 +1,319 @@
+/* styles.css - Melhorias */
+body {
+  font-family: "Inter", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Playfair Display", serif;
+}
+
+/* Animações suaves */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Navbar states */
+.glass-nav {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.transparent-nav {
+  background: transparent;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+/* Logo consistency fix */
+#logo-text {
+  color: #f59e0b !important; /* Amber-500 fixo */
+}
+
+/* Botão flutuante */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Instagram logo fix */
+.instagram-logo {
+  filter: brightness(0) saturate(100%);
+}
+
+.dark .instagram-logo {
+  filter: brightness(0) invert(1);
+}
+
+/* Form inputs improvements */
+.form-input {
+  transition: all 0.2s ease;
+}
+
+.form-input:focus {
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+}
+
+.form-input.error {
+  border-color: #dc2626;
+}
+
+.form-input.success {
+  border-color: #10b981;
+}
+
+/* Custom placeholder style */
+.form-input::placeholder {
+  color: #9ca3af;
+  opacity: 0.7;
+}
+
+.form-input:focus::placeholder {
+  opacity: 0.5;
+}
+
+/* Date and time inputs customization */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+input[type="date"]:focus::-webkit-calendar-picker-indicator,
+input[type="time"]:focus::-webkit-calendar-picker-indicator {
+  opacity: 1;
+}
+
+/* WhatsApp logo consistency */
+.whatsapp-logo {
+  filter: brightness(0) invert(1);
+}
+
+.bg-green-600 .whatsapp-logo {
+  filter: none;
+}
+
+/* Map improvements */
+.map-container {
+  filter: grayscale(100%);
+  transition: filter 0.5s ease;
+}
+
+.map-container:hover {
+  filter: grayscale(0%);
+}
+
+/* Correções específicas para o formulário */
+
+/* Campo de nome - comportamento limpo */
+#name {
+  transition: all 0.2s ease;
+}
+
+#name:focus {
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+#name.valid {
+  border-color: #10b981;
+  background-color: #f0fdf4;
+}
+
+#name.error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+/* Container de data */
+#date-container {
+  transition: all 0.3s ease;
+}
+
+#date-display {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+/* Botões de sugestão de horário */
+.time-suggestion-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.time-suggestion-btn:hover {
+  background-color: #f3f4f6;
+  transform: translateY(-1px);
+}
+
+.time-suggestion-btn.active {
+  background-color: #f59e0b;
+  color: white;
+  border-color: #f59e0b;
+}
+
+/* Feedback visual para campos */
+.border-green-300 {
+  border-color: #86efac !important;
+}
+
+.bg-green-50 {
+  background-color: #f0fdf4 !important;
+}
+
+.border-red-300 {
+  border-color: #fca5a5 !important;
+}
+
+.bg-red-50 {
+  background-color: #fef2f2 !important;
+}
+
+/* Animações de loading */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+/* Prevenir highlight azul em mobile */
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Estilo específico para campo de horário */
+#time-input {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Feedback visual para campos válidos */
+#time-input.valid {
+  border-color: #10b981;
+  background-color: #f0fdf4;
+}
+
+#time-input.invalid {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Animação de shake para erro */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+/* Placeholder mais visível */
+::placeholder {
+  opacity: 0.6;
+}
+
+/* Melhorar foco nos campos */
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+}
+
+/* Feedback de validação em tempo real */
+.validation-hint {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.validation-hint.valid {
+  color: #10b981;
+}
+
+.validation-hint.invalid {
+  color: #ef4444;
+}
+/* Estilo para campo de hora vazio */
+#time-input:placeholder-shown {
+  border-color: #d1d5db; /* gray-300 */
+  background-color: #f9fafb; /* gray-50 */
+}
+
+/* Remover a animação de shake se não for necessário */
+#time-input.invalid {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+  /* Remover animation: shake; */
+}
+/* Estilos para a seção de pagamentos */
+.payment-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.payment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Ícones de pagamento */
+.payment-icon {
+  transition: all 0.3s ease;
+}
+
+.payment-card:hover .payment-icon {
+  transform: scale(1.15);
+  background-color: #fef3c7; /* amber-100 */
+}
+
+/* Badges de pagamento */
+.payment-badge {
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+}
+
+/* Garantir que os ícones Lucide sejam inicializados */
+.payment-card i {
+  display: inline-block;
+}
