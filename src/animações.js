@@ -1,6 +1,3 @@
-// animations-fast.js - Sistema de Animações Rápidas para Barbearia Soares
-// Animações otimizadas e mais rápidas para melhor experiência
-
 (function () {
   "use strict";
 
@@ -369,7 +366,27 @@
           }
         });
       }
+      // Configuração Global
+      const sr = ScrollReveal({
+        origin: "top",
+        distance: "50px",
+        duration: 800,
+        delay: 0, // Tiramos o atraso para ser instantâneo
+        reset: false, // Não repete a animação ao subir a página (melhor performance)
+      });
 
+      // 1. CARREGAMENTO IMEDIATO (Topo do site)
+      sr.reveal(".navbar", { distance: "0px", duration: 400 });
+      sr.reveal(".hero-content", { origin: "left", distance: "100px" });
+      sr.reveal(".hero-image", { origin: "right", distance: "100px" });
+
+      // 2. CARREGAMENTO CONFORME O SCROLL (Resto da página)
+      sr.reveal(".service-card", { interval: 100, origin: "bottom" });
+      sr.reveal(".about-content", { origin: "left" });
+      sr.reveal(".about-image", { origin: "right" });
+      sr.reveal(".gallery-item", { interval: 100 });
+      sr.reveal(".contact-info", { origin: "left" });
+      sr.reveal(".contact-form", { origin: "right" });
       // ========== INTERSECTION OBSERVER PARA ANIMAÇÕES DE SCROLL RÁPIDAS ==========
       const observerOptions = {
         threshold: 0.1,
