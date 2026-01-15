@@ -1,0 +1,164 @@
+/* Adicionar ao final do arquivo style.css */
+
+/* ========== ANIMAÇÕES SUAVES ========== */
+/* Fade-in suave */
+@keyframes fadeInSoft {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scale-in suave */
+@keyframes scaleInSoft {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Slide-in suave da esquerda */
+@keyframes slideInLeftSoft {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide-in suave da direita */
+@keyframes slideInRightSoft {
+  0% {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Float suave */
+@keyframes floatSoft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Classes de animação suave */
+.animate-fade-in-soft {
+  animation: fadeInSoft 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-scale-in-soft {
+  animation: scaleInSoft 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-slide-left-soft {
+  animation: slideInLeftSoft 0.7s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-slide-right-soft {
+  animation: slideInRightSoft 0.7s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-float-soft {
+  animation: floatSoft 4s ease-in-out infinite;
+}
+
+/* Reveal progressivo para elementos em lista */
+.animate-stagger-reveal-soft {
+  animation: fadeInSoft 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+/* Gradiente animado suave */
+@keyframes gradientShiftSoft {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient-soft {
+  background: linear-gradient(90deg, #f59e0b, #d97706, #f59e0b);
+  background-size: 200% 100%;
+  animation: gradientShiftSoft 3s ease infinite;
+}
+
+/* Efeito de fade-in escalonado para elementos filhos */
+.stagger-children > * {
+  opacity: 0;
+  animation: fadeInSoft 0.5s ease-out forwards;
+}
+
+/* Transição suave para hover */
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Card hover suave */
+.card-hover-soft {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover-soft:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* ========== ANIMAÇÃO PARA NAVBAR ========== */
+.navbar-transition {
+  transition: all 0.3s ease-in-out;
+}
+
+/* ========== ANIMAÇÃO PARA FORMULÁRIOS ========== */
+.form-field-fade-in {
+  animation: fadeInSoft 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+/* ========== ANIMAÇÃO PARA GALERIA ========== */
+.gallery-item-soft {
+  animation: scaleInSoft 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+/* ========== LOADING SUAVE ========== */
+@keyframes loadingPulseSoft {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-loading-pulse-soft {
+  animation: loadingPulseSoft 1.5s ease-in-out infinite;
+}
