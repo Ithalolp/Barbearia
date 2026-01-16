@@ -152,9 +152,9 @@ document.addEventListener("DOMContentLoaded", function () {
     return `${year}-${month}-${day}`;
   }
 
-  // ========== SISTEMA DE HORÁRIO CORRIGIDO ==========
+  // ========== SISTEMA DE HORÁRIO MELHORADO ==========
 
-  // Função para formatar horário enquanto digita (MÁSCARA SIMPLES)
+  // Função para formatar horário enquanto digita (MÁSCARA MELHORADA)
   function formatTimeInput(inputValue) {
     // Remover tudo que não é número
     let numbers = inputValue.replace(/\D/g, "");
@@ -167,19 +167,26 @@ document.addEventListener("DOMContentLoaded", function () {
       numbers = numbers.substring(0, 4);
     }
 
-    // Se tiver mais de 2 dígitos, adicionar : após o segundo
-    if (numbers.length > 2) {
-      return numbers.substring(0, 2) + ":" + numbers.substring(2);
+    // Formatar baseado no comprimento
+    if (numbers.length <= 2) {
+      return numbers; // Apenas horas
+    } else if (numbers.length === 3) {
+      // Exemplo: 123 -> 12:3
+      return numbers.substring(0, 2) + ":" + numbers.substring(2, 3);
+    } else {
+      // Exemplo: 1234 -> 12:34
+      return numbers.substring(0, 2) + ":" + numbers.substring(2, 4);
     }
-
-    // Se tiver 1-2 dígitos, manter como está
-    return numbers;
   }
 
   // Função para validar e formatar final (ao sair do campo)
   function validateAndFormatTime(timeStr) {
     if (!timeStr || timeStr.trim() === "") {
-      return { valid: false, message: "Digite um horário" };
+      return {
+        valid: false,
+        message: "Digite um horário",
+        display: "",
+      };
     }
 
     // Remover : temporariamente para validação
@@ -187,45 +194,79 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Se não tiver números suficientes
     if (time.length < 1) {
-      return { valid: false, message: "Digite um horário" };
+      return {
+        valid: false,
+        message: "Digite pelo menos 1 dígito",
+        display: "",
+      };
     }
 
     // Completar com zeros se necessário
     if (time.length === 1) {
-      time = "0" + time + "00";
+      time = "0" + time + "00"; // 8 -> 08:00
     } else if (time.length === 2) {
-      time = time + "00";
+      time = time + "00"; // 12 -> 12:00
     } else if (time.length === 3) {
-      time = "0" + time.substring(0, 1) + time.substring(1, 3) + "0";
+      time = time.substring(0, 2) + time.substring(2, 3) + "0"; // 830 -> 08:30
     }
 
     // Garantir formato HH:MM
     const hours = time.substring(0, 2);
     const minutes = time.substring(2, 4);
 
-    const formattedTime = `${hours}:${minutes}`;
     const hourNum = parseInt(hours);
     const minuteNum = parseInt(minutes);
 
     // Validar valores
-    if (hourNum < 0 || hourNum > 23 || minuteNum < 0 || minuteNum > 59) {
-      return { valid: false, message: "Horário inválido" };
+    if (isNaN(hourNum) || isNaN(minuteNum)) {
+      return {
+        valid: false,
+        message: "Horário inválido",
+        display: "",
+      };
     }
+
+    if (hourNum < 0 || hourNum > 23 || minuteNum < 0 || minuteNum > 59) {
+      return {
+        valid: false,
+        message: "Horário inválido",
+        display: "",
+      };
+    }
+
+    // Formatar para exibição
+    const formattedTime = `${hours.padStart(2, "0")}:${minutes.padStart(
+      2,
+      "0"
+    )}`;
 
     // Validar horário comercial (8h-17h)
     if (hourNum < 8 || hourNum > 17) {
       return {
         valid: false,
-        message: "Fora do expediente (8h-17h)",
+        message: "Fora do expediente (8h às 17h)",
+        display: formattedTime,
         suggestion: hourNum < 8 ? "08:00" : "17:00",
       };
     }
 
+    // Validar horário após 17:00
     if (hourNum === 17 && minuteNum > 0) {
       return {
         valid: false,
         message: "Último horário: 17:00",
+        display: formattedTime,
         suggestion: "17:00",
+      };
+    }
+
+    // Validar intervalo de 30 minutos (opcional)
+    if (minuteNum % 30 !== 0) {
+      return {
+        valid: true,
+        formatted: formattedTime,
+        display: `${hourNum}h${minuteNum > 0 ? minuteNum : ""}`,
+        warning: "Sugerimos horários cheios ou meia-hora (ex: 9:00, 9:30)",
       };
     }
 
@@ -234,6 +275,352 @@ document.addEventListener("DOMContentLoaded", function () {
       formatted: formattedTime,
       display: `${hourNum}h${minuteNum > 0 ? minuteNum : ""}`,
     };
+  }
+
+  // Função para configurar campo de horário
+  function setupTimeField() {
+    const timeInput = document.getElementById("time-input");
+    const timeHidden = document.getElementById("time");
+
+    if (!timeInput || !timeHidden) return;
+
+    // Começar com campo vazio
+    timeInput.value = "";
+    timeHidden.value = "";
+
+    // Adicionar placeholder sugerido
+    timeInput.placeholder = "Das 8h às 17h";
+
+    // Criar elemento de feedback se não existir
+    let timeFeedback = document.getElementById("time-feedback");
+    if (!timeFeedback) {
+      timeFeedback = document.createElement("div");
+      timeFeedback.id = "time-feedback";
+      timeFeedback.className = "text-xs mt-1";
+      timeInput.parentNode.appendChild(timeFeedback);
+    }
+
+    // Variáveis para controle
+    let lastValidTime = "";
+
+    // Evento de input (enquanto digita)
+    timeInput.addEventListener("input", function () {
+      const cursorPos = this.selectionStart;
+      const oldValue = this.value;
+
+      // Aplicar formatação
+      const formattedValue = formatTimeInput(this.value);
+
+      // Atualizar se mudou
+      if (formattedValue !== this.value) {
+        this.value = formattedValue;
+
+        // Manter cursor na posição correta
+        const diff = formattedValue.length - oldValue.length;
+        const newCursorPos = cursorPos + diff;
+        this.setSelectionRange(newCursorPos, newCursorPos);
+      }
+
+      // Validar
+      updateTimeFeedback(this.value);
+    });
+
+    // Evento de blur (ao sair do campo)
+    timeInput.addEventListener("blur", function () {
+      if (!this.value.trim()) return;
+
+      const validation = validateAndFormatTime(this.value);
+
+      if (validation.valid) {
+        // Se tiver warning, apenas mostrar mas aceitar
+        if (validation.warning) {
+          showTimeFeedback(validation.warning, "warning");
+        }
+
+        // Formatar corretamente
+        this.value = validation.formatted;
+        timeHidden.value = validation.formatted;
+        lastValidTime = validation.formatted;
+
+        updateTimeFeedback(this.value);
+      } else if (validation.suggestion) {
+        // Sugerir horário alternativo
+        this.value = validation.suggestion;
+        timeHidden.value = validation.suggestion;
+        lastValidTime = validation.suggestion;
+
+        updateTimeFeedback(this.value);
+        showTimeFeedback(
+          `Horário ajustado para ${validation.suggestion}`,
+          "info"
+        );
+      }
+    });
+
+    // Evento de focus (ao entrar no campo)
+    timeInput.addEventListener("focus", function () {
+      this.classList.remove("border-red-300", "border-green-300");
+      this.classList.add("border-amber-500");
+    });
+
+    // Função para atualizar feedback visual
+    function updateTimeFeedback(value) {
+      if (!value.trim()) {
+        timeFeedback.textContent = "Digite o horário desejado (8h às 17h)";
+        timeFeedback.className = "text-xs mt-1 text-gray-500";
+        timeInput.classList.remove(
+          "border-red-300",
+          "border-green-300",
+          "bg-red-50",
+          "bg-green-50"
+        );
+        timeInput.classList.add("border-gray-300");
+        timeHidden.value = "";
+        return;
+      }
+
+      const validation = validateAndFormatTime(value);
+
+      if (validation.valid) {
+        timeFeedback.textContent = validation.display
+          ? `Horário: ${validation.display}`
+          : "Horário válido";
+        timeFeedback.className = "text-xs mt-1 text-green-600 font-medium";
+        timeInput.classList.remove(
+          "border-red-300",
+          "border-gray-300",
+          "bg-red-50"
+        );
+        timeInput.classList.add("border-green-300", "bg-green-50");
+        timeHidden.value = validation.formatted;
+        lastValidTime = validation.formatted;
+      } else {
+        timeFeedback.textContent = validation.message;
+        timeFeedback.className = "text-xs mt-1 text-red-600 font-medium";
+        timeInput.classList.remove(
+          "border-green-300",
+          "border-gray-300",
+          "bg-green-50"
+        );
+        timeInput.classList.add("border-red-300", "bg-red-50");
+        timeHidden.value = "";
+      }
+    }
+
+    // Função para mostrar feedback temporário
+    function showTimeFeedback(message, type = "info") {
+      const tempFeedback = document.createElement("div");
+      tempFeedback.className = `text-xs mt-1 font-medium ${
+        type === "warning" ? "text-amber-600" : "text-blue-600"
+      }`;
+      tempFeedback.textContent = message;
+      tempFeedback.id = "temp-feedback";
+
+      // Remover feedback anterior se existir
+      const existing = document.getElementById("temp-feedback");
+      if (existing) existing.remove();
+
+      timeInput.parentNode.appendChild(tempFeedback);
+
+      // Remover após 3 segundos
+      setTimeout(() => {
+        if (tempFeedback.parentNode) {
+          tempFeedback.remove();
+        }
+      }, 3000);
+    }
+
+    // Adicionar sugestões de horários populares
+    addTimeSuggestions();
+  }
+
+  // Adicionar sugestões de horários abaixo do campo
+  function addTimeSuggestions() {
+    const timeInput = document.getElementById("time-input");
+    if (!timeInput) return;
+
+    const suggestionsContainer = document.getElementById("time-suggestions");
+    if (!suggestionsContainer) return;
+
+    suggestionsContainer.innerHTML = "";
+
+    const popularTimes = [];
+
+    popularTimes.forEach((time) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className =
+        "text-xs bg-gray-100 hover:bg-amber-100 text-gray-700 hover:text-amber-700 px-2 py-1 rounded transition-colors";
+      button.textContent = time.replace(":00", "h");
+      button.addEventListener("click", () => {
+        document.getElementById("time-input").value = time;
+        document.getElementById("time-input").dispatchEvent(new Event("input"));
+        document.getElementById("time-input").dispatchEvent(new Event("blur"));
+      });
+      suggestionsContainer.appendChild(button);
+    });
+  }
+
+  // ========== SISTEMA DE SERVIÇOS (RADIO BUTTONS) ==========
+  function setupServiceSelection() {
+    const serviceInputs = document.querySelectorAll('input[name="service"]');
+    const serviceHidden = document.getElementById("service-hidden");
+
+    if (!serviceHidden || serviceInputs.length === 0) return;
+
+    // Inicializar como vazio
+    serviceHidden.value = "";
+
+    // Adicionar evento a cada radio button
+    serviceInputs.forEach((input) => {
+      input.addEventListener("change", function () {
+        if (this.checked) {
+          serviceHidden.value = this.value;
+
+          // Adicionar classe de seleção visual
+          const allLabels = document.querySelectorAll(
+            'input[name="service"] + label'
+          );
+          allLabels.forEach((label) => {
+            label.classList.remove("border-amber-500", "bg-amber-50");
+            label.classList.add("border-gray-200");
+          });
+
+          const currentLabel = this.nextElementSibling;
+          if (currentLabel) {
+            currentLabel.classList.add("border-amber-500", "bg-amber-50");
+            currentLabel.classList.remove("border-gray-200");
+          }
+        }
+      });
+
+      // Adicionar evento de clique também no label
+      const label = input.nextElementSibling;
+      if (label) {
+        label.addEventListener("click", () => {
+          input.checked = true;
+          input.dispatchEvent(new Event("change"));
+        });
+      }
+    });
+  }
+
+  // ========== SISTEMA DE MEIO DE PAGAMENTO ==========
+  function setupPaymentSelection() {
+    const paymentInputs = document.querySelectorAll(
+      'input[name="payment-method"]'
+    );
+    const paymentHidden = document.getElementById("payment-hidden");
+    const pixWarning = document.getElementById("pix-warning");
+    const otherPaymentInfo = document.getElementById("other-payment-info");
+    const pixChaveContainer = document.getElementById("pix-chave-container");
+    const pixChaveInput = document.getElementById("pix-chave");
+    const copyPixBtn = document.getElementById("copy-pix-btn");
+
+    if (!paymentHidden || paymentInputs.length === 0) return;
+
+    // Inicializar como vazio
+    paymentHidden.value = "";
+
+    // Adicionar evento a cada radio button
+    paymentInputs.forEach((input) => {
+      input.addEventListener("change", function () {
+        if (this.checked) {
+          paymentHidden.value = this.value;
+
+          // Adicionar classe de seleção visual
+          const allLabels = document.querySelectorAll(
+            'input[name="payment-method"] + label'
+          );
+          allLabels.forEach((label) => {
+            label.classList.remove("border-amber-500", "bg-amber-50");
+            label.classList.add("border-gray-200");
+          });
+
+          const currentLabel = this.nextElementSibling;
+          if (currentLabel) {
+            currentLabel.classList.add("border-amber-500", "bg-amber-50");
+            currentLabel.classList.remove("border-gray-200");
+          }
+
+          // Mostrar/ocultar avisos baseados no pagamento selecionado
+          if (this.value === "Pix") {
+            if (pixWarning) {
+              pixWarning.classList.remove("hidden");
+              pixWarning.classList.add("animate-fade-in-soft");
+            }
+            if (otherPaymentInfo) {
+              otherPaymentInfo.classList.add("hidden");
+            }
+            if (pixChaveContainer) {
+              pixChaveContainer.classList.remove("hidden");
+            }
+          } else {
+            if (pixWarning) {
+              pixWarning.classList.add("hidden");
+              pixWarning.classList.remove("animate-fade-in-soft");
+            }
+            if (otherPaymentInfo) {
+              otherPaymentInfo.classList.remove("hidden");
+            }
+            if (pixChaveContainer) {
+              pixChaveContainer.classList.add("hidden");
+            }
+          }
+        }
+      });
+
+      // Adicionar evento de clique também no label
+      const label = input.nextElementSibling;
+      if (label) {
+        label.addEventListener("click", () => {
+          input.checked = true;
+          input.dispatchEvent(new Event("change"));
+        });
+      }
+    });
+
+    // Configurar botão de copiar chave Pix
+    if (copyPixBtn && pixChaveInput) {
+      copyPixBtn.addEventListener("click", function () {
+        if (!pixChaveInput.value.trim()) {
+          pixChaveInput.value = "5588994202290"; // Chave padrão
+        }
+
+        pixChaveInput.select();
+        pixChaveInput.setSelectionRange(0, 99999); // Para mobile
+
+        try {
+          navigator.clipboard.writeText(pixChaveInput.value).then(() => {
+            const originalText = copyPixBtn.innerHTML;
+            copyPixBtn.innerHTML =
+              '<i data-lucide="check" class="w-4 h-4"></i> Copiado!';
+            copyPixBtn.classList.remove("bg-amber-600");
+            copyPixBtn.classList.add("bg-green-600");
+
+            setTimeout(() => {
+              copyPixBtn.innerHTML = originalText;
+              copyPixBtn.classList.remove("bg-green-600");
+              copyPixBtn.classList.add("bg-amber-600");
+            }, 2000);
+          });
+        } catch (err) {
+          // Fallback para navegadores antigos
+          document.execCommand("copy");
+          const originalText = copyPixBtn.innerHTML;
+          copyPixBtn.innerHTML =
+            '<i data-lucide="check" class="w-4 h-4"></i> Copiado!';
+          copyPixBtn.classList.remove("bg-amber-600");
+          copyPixBtn.classList.add("bg-green-600");
+
+          setTimeout(() => {
+            copyPixBtn.innerHTML = originalText;
+            copyPixBtn.classList.remove("bg-green-600");
+            copyPixBtn.classList.add("bg-amber-600");
+          }, 2000);
+        }
+      });
+    }
   }
 
   // ========== INICIALIZAR SISTEMA DE AGENDAMENTO ==========
@@ -273,134 +660,19 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // 3. CONFIGURAR CAMPO DE SERVIÇO
-    const serviceSelect = document.getElementById("service");
-    if (serviceSelect) {
-      // Garantir que comece vazio
-      serviceSelect.value = "";
+    // 3. CONFIGURAR CAMPO DE SERVIÇO (RADIO BUTTONS)
+    setupServiceSelection();
 
-      serviceSelect.addEventListener("change", function () {
-        if (this.value) {
-          this.classList.remove("border-red-300");
-          this.classList.add("border-green-300");
-        } else {
-          this.classList.remove("border-green-300");
-        }
-      });
-    }
+    // 4. CONFIGURAR CAMPO DE PAGAMENTO (RADIO BUTTONS)
+    setupPaymentSelection();
 
-    // 4. CONFIGURAR CAMPO DE HORÁRIO - MÁSCARA SIMPLES
-    const timeInput = document.getElementById("time-input");
-    const timeHidden = document.getElementById("time");
-    const timeHint = document.getElementById("time-format-hint");
+    // 5. CONFIGURAR CAMPO DE HORÁRIO - USANDO NOVO SISTEMA
+    setupTimeField();
 
-    if (timeInput && timeHidden && timeHint) {
-      // Começar com campo vazio
-      timeInput.value = "";
-      timeHidden.value = "";
-      timeHint.textContent = "Digite o horário";
-      timeHint.classList.remove("text-green-600", "text-red-500");
-      timeHint.classList.add("text-gray-400");
-
-      // VARIÁVEL para controlar o cursor
-      let previousValue = "";
-      let previousCursorPos = 0;
-
-      // MÁSCARA SIMPLES: só permite números e adiciona : automaticamente
-      timeInput.addEventListener("input", function () {
-        const cursorPos = this.selectionStart;
-        previousValue = this.value;
-        previousCursorPos = cursorPos;
-
-        // Formatar enquanto digita (apenas números e :)
-        const formattedValue = formatTimeInput(this.value);
-
-        // Atualizar valor se mudou
-        if (formattedValue !== this.value) {
-          this.value = formattedValue;
-
-          // Ajustar posição do cursor
-          let newCursorPos = cursorPos;
-
-          // Se adicionamos :, ajustar cursor
-          if (
-            formattedValue.length > previousValue.length &&
-            formattedValue.includes(":") &&
-            !previousValue.includes(":")
-          ) {
-            newCursorPos = cursorPos + 1;
-          }
-
-          this.setSelectionRange(newCursorPos, newCursorPos);
-        }
-
-        // Validar em tempo real (apenas para feedback)
-        if (this.value.trim()) {
-          const validation = validateAndFormatTime(this.value);
-
-          if (validation.valid) {
-            this.classList.remove("border-red-300", "bg-red-50");
-            this.classList.add("border-green-300", "bg-green-50");
-            timeHint.textContent = validation.display;
-            timeHint.classList.remove("text-red-500");
-            timeHint.classList.add("text-green-600");
-            timeHidden.value = validation.formatted;
-          } else {
-            this.classList.remove("border-green-300", "bg-green-50");
-            this.classList.add("border-red-300", "bg-red-50");
-            timeHint.textContent = validation.message;
-            timeHint.classList.remove("text-green-600");
-            timeHint.classList.add("text-red-500");
-            timeHidden.value = "";
-          }
-        } else {
-          this.classList.remove(
-            "border-green-300",
-            "bg-green-50",
-            "border-red-300",
-            "bg-red-50"
-          );
-          timeHint.textContent = "Digite o horário";
-          timeHint.classList.remove("text-green-600", "text-red-500");
-          timeHint.classList.add("text-gray-400");
-          timeHidden.value = "";
-        }
-      });
-
-      // Formatar final ao perder o foco
-      timeInput.addEventListener("blur", function () {
-        if (this.value && this.value.trim()) {
-          const validation = validateAndFormatTime(this.value);
-
-          if (validation.valid) {
-            this.value = validation.formatted;
-            this.dispatchEvent(new Event("input"));
-          } else if (validation.suggestion) {
-            this.value = validation.suggestion;
-            this.dispatchEvent(new Event("input"));
-          }
-        }
-      });
-
-      // Permitir apagar completamente
-      timeInput.addEventListener("keydown", function (e) {
-        if (e.key === "Backspace" || e.key === "Delete") {
-          setTimeout(() => {
-            if (!this.value.trim()) {
-              this.classList.remove(
-                "border-green-300",
-                "bg-green-50",
-                "border-red-300",
-                "bg-red-50"
-              );
-              timeHint.textContent = "Digite o horário";
-              timeHint.classList.remove("text-green-600", "text-red-500");
-              timeHint.classList.add("text-gray-400");
-              timeHidden.value = "";
-            }
-          }, 10);
-        }
-      });
+    // 6. CONFIGURAR OBSERVAÇÕES
+    const observationsInput = document.getElementById("observations");
+    if (observationsInput) {
+      observationsInput.value = "";
     }
   }
 
@@ -415,9 +687,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Elementos
       const nameInput = document.getElementById("name");
-      const serviceSelect = document.getElementById("service");
+      const serviceHidden = document.getElementById("service-hidden");
+      const paymentHidden = document.getElementById("payment-hidden");
+      const pixChaveInput = document.getElementById("pix-chave");
       const dateInput = document.getElementById("date");
       const timeHidden = document.getElementById("time");
+      const timeInput = document.getElementById("time-input");
+      const observationsInput = document.getElementById("observations");
 
       // Validação básica
       let isValid = true;
@@ -426,39 +702,109 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!nameInput || !nameInput.value.trim()) {
         isValid = false;
         errors.push("Nome");
-        nameInput.classList.add("border-red-500");
+        nameInput.classList.add("border-red-500", "ring-2", "ring-red-200");
       } else {
-        nameInput.classList.remove("border-red-500");
+        nameInput.classList.remove("border-red-500", "ring-2", "ring-red-200");
       }
 
-      if (!serviceSelect || !serviceSelect.value) {
+      if (!serviceHidden || !serviceHidden.value) {
         isValid = false;
         errors.push("Serviço");
-        serviceSelect.classList.add("border-red-500");
+        // Destacar todos os botões de serviço
+        const serviceLabels = document.querySelectorAll(
+          'input[name="service"] + label'
+        );
+        serviceLabels.forEach((label) => {
+          label.classList.add("border-red-500", "ring-2", "ring-red-200");
+        });
       } else {
-        serviceSelect.classList.remove("border-red-500");
+        const serviceLabels = document.querySelectorAll(
+          'input[name="service"] + label'
+        );
+        serviceLabels.forEach((label) => {
+          label.classList.remove("border-red-500", "ring-2", "ring-red-200");
+        });
       }
 
+      // Validação do meio de pagamento
+      if (!paymentHidden || !paymentHidden.value) {
+        isValid = false;
+        errors.push("Meio de Pagamento");
+        // Destacar todos os botões de pagamento
+        const paymentLabels = document.querySelectorAll(
+          'input[name="payment-method"] + label'
+        );
+        paymentLabels.forEach((label) => {
+          label.classList.add("border-red-500", "ring-2", "ring-red-200");
+        });
+      } else {
+        const paymentLabels = document.querySelectorAll(
+          'input[name="payment-method"] + label'
+        );
+        paymentLabels.forEach((label) => {
+          label.classList.remove("border-red-500", "ring-2", "ring-red-200");
+        });
+      }
+
+      // Validação específica para Pix
+      if (paymentHidden && paymentHidden.value === "Pix") {
+        if (!pixChaveInput || !pixChaveInput.value.trim()) {
+          // Preencher automaticamente se estiver vazio
+          if (pixChaveInput) {
+            pixChaveInput.value = "5588994202290";
+          }
+        }
+      }
+
+      // VALIDAÇÃO ESPECÍFICA DO HORÁRIO
       if (!timeHidden || !timeHidden.value) {
         isValid = false;
         errors.push("Horário");
-        const timeInputField = document.getElementById("time-input");
-        if (timeInputField) timeInputField.classList.add("border-red-500");
+        if (timeInput) {
+          timeInput.classList.add("border-red-500", "ring-2", "ring-red-200");
+          // Scroll para o campo
+          timeInput.scrollIntoView({ behavior: "smooth", block: "center" });
+          timeInput.focus();
+        }
       } else {
-        const timeInputField = document.getElementById("time-input");
-        if (timeInputField) timeInputField.classList.remove("border-red-500");
+        // Validar formato final
+        const validation = validateAndFormatTime(timeHidden.value);
+        if (!validation.valid) {
+          isValid = false;
+          errors.push("Horário inválido");
+          if (timeInput) {
+            timeInput.classList.add("border-red-500", "ring-2", "ring-red-200");
+            timeInput.focus();
+          }
+        } else {
+          if (timeInput) {
+            timeInput.classList.remove(
+              "border-red-500",
+              "ring-2",
+              "ring-red-200"
+            );
+          }
+        }
       }
 
       if (!isValid) {
-        alert(`Por favor, preencha: ${errors.join(", ")}`);
+        alert(`Por favor, corrija:\n\n${errors.join("\n")}`);
         return;
       }
 
       // Obter valores
       const name = nameInput.value.trim();
-      const service = serviceSelect.value;
+      const service = serviceHidden.value;
+      const paymentMethod = paymentHidden.value;
+      const pixChave =
+        paymentMethod === "Pix" && pixChaveInput
+          ? pixChaveInput.value.trim()
+          : "";
       const dateValue = dateInput.value;
       const timeValue = timeHidden.value;
+      const observations = observationsInput
+        ? observationsInput.value.trim()
+        : "";
 
       // Formatar data para mensagem
       const dateObj = new Date(dateValue);
@@ -481,15 +827,38 @@ document.addEventListener("DOMContentLoaded", function () {
           : `${parseInt(hours)}h${minutes}`;
 
       // ========== MENSAGEM BEM FORMATADA PARA WHATSAPP ==========
-      // Usando \n para quebras de linha limpas
-      const message =
+      let message =
         `*AGENDAMENTO - BARBEARIA SOARES*\n\n` +
         `👤 *Cliente:* ${name}\n` +
         `✂️ *Serviço:* ${service}\n` +
-        `📅 *Data:* ${dateDisplay}\n` +
-        `⏰ *Horário:* ${timeDisplay}\n\n` +
-        `📍 *Local:* R. Padre Cícero, 185 – Centro, Missão Velha - CE\n\n` +
+        `💳 *Pagamento:* ${paymentMethod}\n`;
+
+      // Adicionar chave Pix se for o caso
+      if (paymentMethod === "Pix" && pixChave) {
+        message += `🔑 *Chave Pix:* ${pixChave}\n`;
+      }
+
+      message +=
+        `📅 *Data:* ${dateDisplay}\n` + `⏰ *Horário:* ${timeDisplay}\n`;
+
+      // Adicionar observações se houver
+      if (observations) {
+        message += `📝 *Observações:* ${observations}\n`;
+      }
+
+      message +=
+        `\n📍 *Local:* R. Padre Cícero, 185 – Centro, Missão Velha - CE\n\n` +
         `_Por favor, confirme a disponibilidade deste horário._`;
+
+      // Instrução específica para Pix
+      if (paymentMethod === "Pix") {
+        message +=
+          `\n\n📋 *INSTRUÇÃO PARA PIX:*\n` +
+          `1. Faça o pagamento via Pix para a chave informada\n` +
+          `2. Envie o comprovante agora para confirmar seu agendamento\n` +
+          `3. Sem comprovante, o agendamento não será confirmado\n` +
+          `4. Em caso de não comparecimento, não haverá devolução`;
+      }
 
       // VERIFICAR SE WHATSAPP_NUMBER ESTÁ DEFINIDO
       if (typeof WHATSAPP_NUMBER === "undefined") {
@@ -523,15 +892,78 @@ document.addEventListener("DOMContentLoaded", function () {
           // Limpar TODOS os campos COMPLETAMENTE
           if (nameInput) {
             nameInput.value = "";
-            nameInput.classList.remove("border-green-300", "border-red-500");
+            nameInput.classList.remove(
+              "border-green-300",
+              "border-red-500",
+              "ring-2",
+              "ring-red-200"
+            );
           }
 
-          if (serviceSelect) {
-            serviceSelect.value = "";
-            serviceSelect.classList.remove(
+          // Limpar seleção de serviço
+          const serviceInputs = document.querySelectorAll(
+            'input[name="service"]'
+          );
+          serviceInputs.forEach((input) => {
+            input.checked = false;
+          });
+          const serviceLabels = document.querySelectorAll(
+            'input[name="service"] + label'
+          );
+          serviceLabels.forEach((label) => {
+            label.classList.remove(
+              "border-amber-500",
+              "bg-amber-50",
               "border-red-500",
-              "border-green-300"
+              "ring-2",
+              "ring-red-200"
             );
+            label.classList.add("border-gray-200");
+          });
+          if (serviceHidden) {
+            serviceHidden.value = "";
+          }
+
+          // Limpar seleção de pagamento
+          const paymentInputs = document.querySelectorAll(
+            'input[name="payment-method"]'
+          );
+          paymentInputs.forEach((input) => {
+            input.checked = false;
+          });
+          const paymentLabels = document.querySelectorAll(
+            'input[name="payment-method"] + label'
+          );
+          paymentLabels.forEach((label) => {
+            label.classList.remove(
+              "border-amber-500",
+              "bg-amber-50",
+              "border-red-500",
+              "ring-2",
+              "ring-red-200"
+            );
+            label.classList.add("border-gray-200");
+          });
+          if (paymentHidden) {
+            paymentHidden.value = "";
+          }
+
+          // Ocultar avisos
+          const pixWarning = document.getElementById("pix-warning");
+          if (pixWarning) {
+            pixWarning.classList.add("hidden");
+          }
+
+          const otherPaymentInfo =
+            document.getElementById("other-payment-info");
+          if (otherPaymentInfo) {
+            otherPaymentInfo.classList.add("hidden");
+          }
+
+          // Limpar chave Pix
+          const pixChaveInput = document.getElementById("pix-chave");
+          if (pixChaveInput) {
+            pixChaveInput.value = "";
           }
 
           // Limpar campo de hora COMPLETAMENTE
@@ -542,20 +974,35 @@ document.addEventListener("DOMContentLoaded", function () {
               "border-green-300",
               "bg-green-50",
               "border-red-300",
-              "bg-red-50"
+              "bg-red-50",
+              "border-red-500",
+              "ring-2",
+              "ring-red-200"
             );
+            timeInputField.classList.add("border-gray-300");
           }
 
-          const timeHint = document.getElementById("time-format-hint");
-          if (timeHint) {
-            timeHint.textContent = "Digite o horário";
-            timeHint.classList.remove("text-green-600", "text-red-500");
-            timeHint.classList.add("text-gray-400");
+          // Limpar feedback
+          const timeFeedback = document.getElementById("time-feedback");
+          if (timeFeedback) {
+            timeFeedback.textContent = "Digite o horário desejado (8h às 17h)";
+            timeFeedback.className = "text-xs mt-1 text-gray-500";
           }
 
           // Limpar campo hidden
           if (timeHidden) {
             timeHidden.value = "";
+          }
+
+          // Limpar observações
+          if (observationsInput) {
+            observationsInput.value = "";
+          }
+
+          // Remover sugestões temporárias
+          const tempFeedback = document.getElementById("temp-feedback");
+          if (tempFeedback) {
+            tempFeedback.remove();
           }
 
           // Restaurar botão
@@ -601,4 +1048,6 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     };
   }
+
+  console.log("✅ Sistema JavaScript inicializado com sucesso!");
 });
