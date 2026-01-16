@@ -245,7 +245,9 @@
             if (entries[0].isIntersecting) {
               // Simular contagem suave
               let count = 0;
-              const maxCount = 10;
+              const maxCount = parseInt(
+                experienceElement.textContent.match(/\d+/)[0]
+              );
 
               const interval = setInterval(() => {
                 if (count <= maxCount) {
