@@ -9,7 +9,7 @@
     <title>BARBEARIA SOARES</title>
     <meta
       name="description"
-      content="Salão de beleza especializado em cortes, coloração e tratamentos. Agende seu horário pelo WhatsApp."
+      content="Barbearia especializada em cortes, barba e tratamentos masculinos. Agende seu horário pelo WhatsApp."
     />
 
     <!-- Tailwind CSS (Estilização Moderna) -->
@@ -320,7 +320,7 @@
           </div>
 
           <!-- Service 3 -->
-            <div
+          <div
             class="group bg-gray-800 p-8 rounded-2xl hover:bg-gray-700 transition-colors border border-gray-700 hover:border-amber-600/50"
           >
             <div
@@ -335,14 +335,12 @@
             <div
               class="flex items-center justify-between mt-auto pt-4 border-t border-gray-700/50"
             >
-              <span class="text-amber-500 font-bold text-sm"
-                >R$ - R$</span
-              >
+              <span class="text-amber-500 font-bold text-sm">R$ - R$</span>
             </div>
           </div>
 
           <!-- Service 4 -->
-            <div
+          <div
             class="group bg-gray-800 p-8 rounded-2xl hover:bg-gray-700 transition-colors border border-gray-700 hover:border-amber-600/50"
           >
             <div
@@ -357,9 +355,7 @@
             <div
               class="flex items-center justify-between mt-auto pt-4 border-t border-gray-700/50"
             >
-              <span class="text-amber-500 font-bold text-sm"
-                >R$ - R$</span
-              >
+              <span class="text-amber-500 font-bold text-sm">R$ - R$</span>
             </div>
           </div>
         </div>
@@ -416,6 +412,7 @@
         </div>
       </div>
     </section>
+    
     <!-- Seção de Formas de Pagamento (Adicionada) -->
     <section id="Pagamento" class="py-20 bg-amber-50 border-t border-amber-100">
       <div class="container mx-auto px-4">
@@ -509,6 +506,7 @@
         </div>
       </div>
     </section>
+
     <!-- Booking Section -->
     <section
       id="agendar"
@@ -522,17 +520,17 @@
         <div class="flex flex-col lg:flex-row gap-16 items-center">
           <div class="w-full lg:w-1/2">
             <h2
-              class="text-amber-500 font-bold uppercase tracking-wider text-sm mb-2 text-center"
+              class="text-amber-500 font-bold uppercase tracking-wider text-sm mb-2 text-center lg:text-left"
             >
               Agendamento Online
             </h2>
             <h3
-              class="text-4xl md:text-5xl font-bold font-serif mb-6 text-center"
+              class="text-4xl md:text-5xl font-bold font-serif mb-6 text-center lg:text-left"
             >
               Garanta seu horário com facilidade
             </h3>
             <p class="text-gray-400 text-lg mb-8 leading-relaxed">
-              Preencha o formulário e você será redirecionada automaticamente
+              Preencha o formulário e você será redirecionado automaticamente
               para o nosso WhatsApp com todas as informações prontas. Nossa
               equipe confirmará a disponibilidade em instantes.
             </p>
@@ -541,17 +539,20 @@
               class="bg-gray-800/50 p-6 rounded-xl border border-gray-700 mt-8"
             >
               <h4 class="flex items-center gap-2 font-bold mb-4 text-amber-500">
-                <i data-lucide="clock" class="w-5 h-5"></i> Horários de
-                Funcionamento
+                <i data-lucide="clock" class="w-5 h-5"></i> Informações Importantes
               </h4>
-              <ul class="space-y-2 text-sm text-gray-300">
-                <li class="flex justify-between border-b border-gray-700 pb-2">
-                  <span>Segunda a Sábado</span>
-                  <span>08:00 - 17:00</span>
+              <ul class="space-y-3 text-sm text-gray-300">
+                <li class="flex items-start gap-2">
+                  <i data-lucide="info" class="text-amber-500 w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                  <span>Agendamentos confirmados somente após pagamento</span>
                 </li>
-                <li class="flex justify-between border-b border-gray-700 pb-2">
-                  <span>Domingo</span>
-                  <span>Fechado</span>
+                <li class="flex items-start gap-2">
+                  <i data-lucide="clock" class="text-amber-500 w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                  <span>Chegue 5 minutos antes do horário agendado</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i data-lucide="alert-circle" class="text-amber-500 w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                  <span>Cancelamentos com até 1 hora de antecedência</span>
                 </li>
               </ul>
             </div>
@@ -564,41 +565,168 @@
               <!-- Campo Nome -->
               <div>
                 <label class="block text-sm font-bold text-gray-700 mb-2">
-                  Seu Nome
+                  <div class="flex items-center justify-between">
+                    <span>Seu Nome</span>
+                    <span class="text-xs text-gray-500 font-normal">*Obrigatório</span>
+                  </div>
                 </label>
                 <input
                   type="text"
                   id="name"
                   name="name"
                   required
-                  class="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all placeholder-gray-400"
+                  class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all placeholder-gray-400"
                   placeholder="Digite seu nome completo"
                   autocomplete="off"
                   autocorrect="off"
                 />
+                <p class="text-xs text-gray-500 mt-1">
+                  Informe seu nome completo para identificação
+                </p>
               </div>
 
-              <!-- Campo Serviço -->
+              <!-- Campo Serviço Desejado - MELHORADO -->
               <div>
                 <label class="block text-sm font-bold text-gray-700 mb-2">
-                  Serviço Desejado
+                  <div class="flex items-center justify-between">
+                    <span>Serviço Desejado</span>
+                    <span class="text-xs text-gray-500 font-normal">*Obrigatório</span>
+                  </div>
                 </label>
-                <select
-                  id="service"
-                  name="service"
-                  class="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all"
-                >
-                  <option value="">Selecione um serviço</option>
-                  <option value="Corte de Cabelo">Corte de Cabelo</option>
-                  <option value="Barba">Barba</option>
-                  <option value="Outros">Outros</option>
-                </select>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                  <div class="relative">
+                    <input type="radio" id="corte-cabelo" name="service" value="Corte de Cabelo" class="hidden peer">
+                    <label for="corte-cabelo" class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200">
+                      <i data-lucide="scissors" class="w-6 h-6 text-gray-700 mb-2"></i>
+                      <span class="text-sm font-medium">Corte de Cabelo</span>
+                      <span class="text-xs text-gray-500 mt-1">A partir de R$ 25</span>
+                    </label>
+                  </div>
+                  
+                  <div class="relative">
+                    <input type="radio" id="barba" name="service" value="Barba" class="hidden peer">
+                    <label for="barba" class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200">
+                      <i data-lucide="brush" class="w-6 h-6 text-gray-700 mb-2"></i>
+                      <span class="text-sm font-medium">Barba</span>
+                      <span class="text-xs text-gray-500 mt-1">A partir de R$ 15</span>
+                    </label>
+                  </div>
+                  
+                  <div class="relative">
+                    <input type="radio" id="corte-barba" name="service" value="Corte + Barba" class="hidden peer">
+                    <label for="corte-barba" class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200">
+                      <i data-lucide="sparkles" class="w-6 h-6 text-gray-700 mb-2"></i>
+                      <span class="text-sm font-medium">Corte + Barba</span>
+                      <span class="text-xs text-gray-500 mt-1">Pacote especial</span>
+                    </label>
+                  </div>
+                  
+                  <div class="relative">
+                    <input type="radio" id="sobrancelha" name="service" value="Sobrancelha" class="hidden peer">
+                    <label for="sobrancelha" class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200">
+                      <i data-lucide="eye" class="w-6 h-6 text-gray-700 mb-2"></i>
+                      <span class="text-sm font-medium">Sobrancelha</span>
+                      <span class="text-xs text-gray-500 mt-1">Design profissional</span>
+                    </label>
+                  </div>
+                </div>
+                <input type="hidden" id="service-hidden" name="service" required />
+                <p class="text-xs text-gray-500 mt-1">
+                  Selecione o serviço desejado clicando na opção
+                </p>
               </div>
 
-              <!-- Data Automática - CORRIGIDO (sempre hoje até 17h) -->
+              <!-- Campo Meio de Pagamento -->
               <div>
                 <label class="block text-sm font-bold text-gray-700 mb-2">
-                  Data do Agendamento
+                  <div class="flex items-center justify-between">
+                    <span>Meio de Pagamento</span>
+                    <span class="text-xs text-gray-500 font-normal">*Obrigatório</span>
+                  </div>
+                </label>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+                  <div class="relative">
+                    <input type="radio" id="pix-payment" name="payment-method" value="Pix" class="hidden peer">
+                    <label for="pix-payment" class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200">
+                      <i data-lucide="qr-code" class="w-6 h-6 text-gray-700 mb-2"></i>
+                      <span class="text-sm font-medium">Pix</span>
+                    </label>
+                  </div>
+                  
+                  <div class="relative">
+                    <input type="radio" id="cartao-payment" name="payment-method" value="Cartão" class="hidden peer">
+                    <label for="cartao-payment" class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200">
+                      <i data-lucide="credit-card" class="w-6 h-6 text-gray-700 mb-2"></i>
+                      <span class="text-sm font-medium">Cartão</span>
+                    </label>
+                  </div>
+                  
+                  <div class="relative">
+                    <input type="radio" id="dinheiro-payment" name="payment-method" value="Dinheiro" class="hidden peer">
+                    <label for="dinheiro-payment" class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200">
+                      <i data-lucide="banknote" class="w-6 h-6 text-gray-700 mb-2"></i>
+                      <span class="text-sm font-medium">Dinheiro</span>
+                    </label>
+                  </div>
+                </div>
+                <input type="hidden" id="payment-hidden" name="payment-method" required />
+                
+                <!-- Elemento de aviso para Pix (inicialmente escondido) -->
+                <div id="pix-warning" class="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg hidden transition-all duration-300">
+                  <div class="flex items-start gap-3">
+                    <i data-lucide="alert-triangle" class="text-amber-600 mt-0.5 w-5 h-5 flex-shrink-0"></i>
+                    <div class="flex-1">
+                      <h5 class="font-bold text-amber-800 mb-1 text-sm">Atenção - Pagamento via Pix</h5>
+                      <p class="text-xs text-amber-700 mb-2">
+                        Para pagamentos via Pix, o agendamento só será confirmado após o envio do comprovante. Em caso de não comparecimento, não haverá devolução do pagamento.
+                      </p>
+                      <div id="pix-chave-container" class="mt-3">
+                        <label class="block text-xs font-medium text-amber-800 mb-1">
+                          Chave Pix (CPF/CNPJ)
+                        </label>
+                        <div class="flex items-center gap-2">
+                          <input
+                            type="text"
+                            id="pix-chave"
+                            name="pix-chave"
+                            class="flex-1 bg-white border border-amber-300 rounded px-3 py-2 text-sm placeholder-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
+                            placeholder="Digite a chave Pix (CPF/CNPJ)"
+                          />
+                          <button
+                            type="button"
+                            id="copy-pix-btn"
+                            class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-2 rounded text-sm font-medium transition-colors flex items-center gap-1"
+                          >
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                            Copiar
+                          </button>
+                        </div>
+                        <p class="text-xs text-amber-600 mt-1">
+                          Envie o comprovante para (88) 99251-8563
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Observações para outros métodos -->
+                <div id="other-payment-info" class="mt-3 hidden">
+                  <div class="flex items-start gap-2">
+                    <i data-lucide="info" class="text-blue-600 w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                    <p class="text-xs text-blue-700">
+                      Pagamento será realizado no local no momento do atendimento.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Data Automática -->
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">
+                  <div class="flex items-center justify-between">
+                    <span>Data do Agendamento</span>
+                    <span class="text-xs text-gray-500 font-normal">Automático</span>
+                  </div>
                 </label>
                 <div
                   id="date-container"
@@ -629,15 +757,18 @@
               <!-- Horário com Formatação Inteligente -->
               <div>
                 <label class="block text-sm font-bold text-gray-700 mb-2">
-                  Horário Preferencial
+                  <div class="flex items-center justify-between">
+                    <span>Horário Preferencial</span>
+                    <span class="text-xs text-gray-500 font-normal">*Obrigatório</span>
+                  </div>
                 </label>
                 <div class="relative">
                   <input
                     type="text"
                     id="time-input"
                     name="time-input"
-                    class="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all placeholder-gray-400"
-                    placeholder="Digite o horário desejado"
+                    class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all placeholder-gray-400"
+                    placeholder="Ex: 9, 930, 14:30"
                     autocomplete="off"
                     inputmode="numeric"
                   />
@@ -646,12 +777,20 @@
                   ></div>
                 </div>
                 <input type="hidden" id="time" name="time" required />
+                <div id="time-feedback" class="text-xs mt-1 text-gray-500">
+                  Digite o horário desejado (8h às 17h)
+                </div>
+                
+                <!-- Sugestões de horário -->
+                <div id="time-suggestions" class="flex flex-wrap gap-2 mt-2">
+                  <!-- Será preenchido via JavaScript -->
+                </div>
               </div>
 
               <!-- Botão de Envio -->
               <button
                 type="submit"
-                class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-all transform hover:-translate-y-1"
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-all transform hover:-translate-y-1 active:scale-95"
               >
                 <img
                   src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
@@ -662,7 +801,7 @@
               </button>
 
               <p class="text-center text-xs text-gray-400 mt-2">
-                *O horário será confirmado pelo profissional em até 10 minutos.
+                *O horário será confirmado pelo profissional em até 10 minutos após o pagamento.
               </p>
             </form>
           </div>
@@ -870,12 +1009,18 @@
         >
           <p>&copy; 2026 Barbearia Soares. Todos os direitos reservados.</p>
           <p class="mt-2 md:mt-0 flex items-center gap-1">
-            Desenvolvido por
-            <i
-              data-lucide="star"
-              class="w-3 h-3 text-amber-600 fill-current"
-            ></i>
-            excelência
+            Site desenvolvido por
+            <a
+              href="https://www.instagram.com/ithalo.dev/"
+              style="
+                text-align: center;
+                padding-top: 1px;
+                font-size: 0.8rem;
+                color: var(--color-gray-medium);
+              "
+              target="_blank"
+              >Antonio Ithalo</a
+            >
           </p>
         </div>
       </div>
