@@ -459,117 +459,128 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function setupPaymentSelection() {
-    const paymentInputs = document.querySelectorAll(
-      'input[name="payment-method"]'
-    );
-    const paymentHidden = document.getElementById("payment-hidden");
-    const pixWarning = document.getElementById("pix-warning");
-    const otherPaymentInfo = document.getElementById("other-payment-info");
-    const pixChaveContainer = document.getElementById("pix-chave-container");
-    const pixChaveInput = document.getElementById("pix-chave");
-    const copyPixBtn = document.getElementById("copy-pix-btn");
+  const paymentInputs = document.querySelectorAll(
+    'input[name="payment-method"]'
+  );
+  const paymentHidden = document.getElementById("payment-hidden");
+  const pixWarning = document.getElementById("pix-warning");
+  const otherPaymentInfo = document.getElementById("other-payment-info");
+  const pixChaveContainer = document.getElementById("pix-chave-container");
+  const pixChaveDisplay = document.getElementById("pix-chave-display");
+  const copyPixBtn = document.getElementById("copy-pix-btn");
 
-    if (!paymentHidden || paymentInputs.length === 0) return;
-
-
-    paymentHidden.value = "";
+  if (!paymentHidden || paymentInputs.length === 0) return;
 
 
-    paymentInputs.forEach((input) => {
-      input.addEventListener("change", function () {
-        if (this.checked) {
-          paymentHidden.value = this.value;
+  paymentHidden.value = "";
 
-          const allLabels = document.querySelectorAll(
-            'input[name="payment-method"] + label'
-          );
-          allLabels.forEach((label) => {
-            label.classList.remove("border-amber-500", "bg-amber-50");
-            label.classList.add("border-gray-200");
-          });
+  paymentInputs.forEach((input) => {
+    input.addEventListener("change", function () {
+      if (this.checked) {
+        paymentHidden.value = this.value;
 
-          const currentLabel = this.nextElementSibling;
-          if (currentLabel) {
-            currentLabel.classList.add("border-amber-500", "bg-amber-50");
-            currentLabel.classList.remove("border-gray-200");
+  
+        const allLabels = document.querySelectorAll(
+          'input[name="payment-method"] + label'
+        );
+        allLabels.forEach((label) => {
+          label.classList.remove("border-amber-500", "bg-amber-50");
+          label.classList.add("border-gray-200");
+        });
+
+        const currentLabel = this.nextElementSibling;
+        if (currentLabel) {
+          currentLabel.classList.add("border-amber-500", "bg-amber-50");
+          currentLabel.classList.remove("border-gray-200");
+        }
+
+        if (this.value === "Pix") {
+          if (pixWarning) {
+            pixWarning.classList.remove("hidden");
+            pixWarning.classList.add("animate-fade-in-soft");
           }
-
-          if (this.value === "Pix") {
-            if (pixWarning) {
-              pixWarning.classList.remove("hidden");
-              pixWarning.classList.add("animate-fade-in-soft");
-            }
-            if (otherPaymentInfo) {
-              otherPaymentInfo.classList.add("hidden");
-            }
-            if (pixChaveContainer) {
-              pixChaveContainer.classList.remove("hidden");
-            }
-          } else {
-            if (pixWarning) {
-              pixWarning.classList.add("hidden");
-              pixWarning.classList.remove("animate-fade-in-soft");
-            }
-            if (otherPaymentInfo) {
-              otherPaymentInfo.classList.remove("hidden");
-            }
-            if (pixChaveContainer) {
-              pixChaveContainer.classList.add("hidden");
-            }
+          if (otherPaymentInfo) {
+            otherPaymentInfo.classList.add("hidden");
+          }
+          if (pixChaveContainer) {
+            pixChaveContainer.classList.remove("hidden");
+          }
+          
+          const pixChaveReal = "0000000000000";
+          if (pixChaveDisplay) {
+            pixChaveDisplay.textContent = pixChaveReal;
+          }
+        } else {
+          if (pixWarning) {
+            pixWarning.classList.add("hidden");
+            pixWarning.classList.remove("animate-fade-in-soft");
+          }
+          if (otherPaymentInfo) {
+            otherPaymentInfo.classList.remove("hidden");
+          }
+          if (pixChaveContainer) {
+            pixChaveContainer.classList.add("hidden");
           }
         }
-      });
-
-      const label = input.nextElementSibling;
-      if (label) {
-        label.addEventListener("click", () => {
-          input.checked = true;
-          input.dispatchEvent(new Event("change"));
-        });
       }
     });
 
+    const label = input.nextElementSibling;
+    if (label) {
+      label.addEventListener("click", () => {
+        input.checked = true;
+        input.dispatchEvent(new Event("change"));
+      });
+    }
+  });
 
-    if (copyPixBtn && pixChaveInput) {
-      copyPixBtn.addEventListener("click", function () {
-        if (!pixChaveInput.value.trim()) {
-          pixChaveInput.value = "000000000000"; // Chave padrão
-        }
+  if (copyPixBtn && pixChaveDisplay) {
+    copyPixBtn.addEventListener("click", function () {
+      const pixChave = pixChaveDisplay.textContent;
+      
+      if (!pixChave.trim()) {
+        return;
+      }
 
-        pixChaveInput.select();
-        pixChaveInput.setSelectionRange(0, 99999);
-
-        try {
-          navigator.clipboard.writeText(pixChaveInput.value).then(() => {
-            const originalText = copyPixBtn.innerHTML;
-            copyPixBtn.innerHTML =
-              '<i data-lucide="check" class="w-4 h-4"></i> Copiado!';
-            copyPixBtn.classList.remove("bg-amber-600");
-            copyPixBtn.classList.add("bg-green-600");
-
-            setTimeout(() => {
-              copyPixBtn.innerHTML = originalText;
-              copyPixBtn.classList.remove("bg-green-600");
-              copyPixBtn.classList.add("bg-amber-600");
-            }, 2000);
-          });
-        } catch (err) {
-          document.execCommand("copy");
+      try {
+        navigator.clipboard.writeText(pixChave).then(() => {
           const originalText = copyPixBtn.innerHTML;
+          const originalClass = copyPixBtn.className;
+          
           copyPixBtn.innerHTML =
             '<i data-lucide="check" class="w-4 h-4"></i> Copiado!';
-          copyPixBtn.classList.remove("bg-amber-600");
+          copyPixBtn.className = originalClass.replace("bg-amber-600", "bg-green-600");
           copyPixBtn.classList.add("bg-green-600");
 
           setTimeout(() => {
             copyPixBtn.innerHTML = originalText;
-            copyPixBtn.classList.remove("bg-green-600");
-            copyPixBtn.classList.add("bg-amber-600");
+            copyPixBtn.className = originalClass;
           }, 2000);
-        }
-      });
-    }
+        });
+      } catch (err) {
+        const textArea = document.createElement("textarea");
+        textArea.value = pixChave;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        
+        const originalText = copyPixBtn.innerHTML;
+        const originalClass = copyPixBtn.className;
+        
+        copyPixBtn.innerHTML =
+          '<i data-lucide="check" class="w-4 h-4"></i> Copiado!';
+        copyPixBtn.className = originalClass.replace("bg-amber-600", "bg-green-600");
+        copyPixBtn.classList.add("bg-green-600");
+
+        setTimeout(() => {
+          copyPixBtn.innerHTML = originalText;
+          copyPixBtn.className = originalClass;
+        }, 2000);
+      }
+    });
   }
+}
   function initBookingSystem() {
     console.log("Inicializando sistema de agendamento...");
 
@@ -986,4 +997,5 @@ o
 
   console.log("✅ Sistema JavaScript inicializado com sucesso!");
 });
+
 
