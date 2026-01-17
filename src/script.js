@@ -1,13 +1,10 @@
-// ========== INICIALIZAÇÃO SEGURA ==========
 document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM Carregado - Inicializando sistema...");
 
-  // Inicializar ícones Lucide APÓS o DOM carregar
   if (typeof lucide !== "undefined") {
     lucide.createIcons();
   }
 
-  // Obter elementos DOM
   const navbar = document.getElementById("navbar");
   const mobileMenuBtn = document.getElementById("mobile-menu-btn");
   const closeMenuBtn = document.getElementById("close-menu-btn");
@@ -16,14 +13,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const bookingForm = document.getElementById("booking-form");
   const floatingWhatsapp = document.getElementById("floating-whatsapp");
 
-  // ========== CONFIGURAR BOTÃO FLUTUANTE DO WHATSAPP ==========
   if (floatingWhatsapp && typeof WHATSAPP_NUMBER !== "undefined") {
     floatingWhatsapp.href = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}`;
     floatingWhatsapp.title = "Fale conosco no WhatsApp";
     floatingWhatsapp.setAttribute("aria-label", "WhatsApp da Barbearia Soares");
   }
 
-  // ========== NAVBAR SCROLL ==========
   window.addEventListener("scroll", () => {
     if (window.scrollY > 50) {
       navbar.classList.remove("transparent-nav");
@@ -42,7 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // ========== MENU MOBILE ==========
   function toggleMenu() {
     if (mobileMenu) {
       mobileMenu.classList.toggle("translate-x-full");
@@ -64,14 +58,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ========== PREVENIR ENTER NO FORMULÁRIO ==========
   if (bookingForm) {
     bookingForm.addEventListener("keydown", function (e) {
-      // Prevenir envio do formulário com Enter
       if (e.key === "Enter" && e.target.type !== "submit") {
         e.preventDefault();
 
-        // Navegar para o próximo campo
         const inputs = Array.from(
           bookingForm.querySelectorAll("input, select, textarea")
         );
@@ -84,33 +75,24 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ========== SISTEMA DE DATA ==========
-
-  // Função para obter data do dia (até final do expediente)
   function getTodayDate() {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-    // Verificar se estamos dentro do expediente (8h às 17h)
     const currentHour = now.getHours();
 
-    // Se for antes das 17h, usar hoje
     if (currentHour < 17) {
-      // Verificar se não é domingo (0 = Domingo)
       if (today.getDay() !== 0) {
         return today;
       }
     }
 
-    // Se for depois das 17h ou domingo, calcular próxima data
     let nextDate = new Date(today);
 
-    // Se for depois das 17h hoje, pular para amanhã
     if (currentHour >= 17) {
       nextDate.setDate(nextDate.getDate() + 1);
     }
 
-    // Pular domingos
     while (nextDate.getDay() === 0) {
       nextDate.setDate(nextDate.getDate() + 1);
     }
@@ -118,7 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return nextDate;
   }
 
-  // Formatar data para exibição
   function formatDateForDisplay(date) {
     const options = {
       weekday: "long",
@@ -134,7 +115,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let formatted = date.toLocaleDateString("pt-BR", options);
     formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1);
 
-    // Adicionar indicador de hoje/amanhã
     if (date.toDateString() === today.toDateString()) {
       return `Hoje, ${formatted}`;
     } else if (date.toDateString() === tomorrow.toDateString()) {
@@ -144,7 +124,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return formatted;
   }
 
-  // Formatar data para envio (YYYY-MM-DD)
   function formatDateForSubmit(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -152,34 +131,25 @@ document.addEventListener("DOMContentLoaded", function () {
     return `${year}-${month}-${day}`;
   }
 
-  // ========== SISTEMA DE HORÁRIO MELHORADO ==========
-
-  // Função para formatar horário enquanto digita (MÁSCARA MELHORADA)
   function formatTimeInput(inputValue) {
-    // Remover tudo que não é número
     let numbers = inputValue.replace(/\D/g, "");
-
-    // Se não tiver números, retornar vazio
     if (numbers.length === 0) return "";
 
-    // Limitar a 4 dígitos
     if (numbers.length > 4) {
       numbers = numbers.substring(0, 4);
     }
 
-    // Formatar baseado no comprimento
     if (numbers.length <= 2) {
-      return numbers; // Apenas horas
+      return numbers; 
     } else if (numbers.length === 3) {
-      // Exemplo: 123 -> 12:3
+
       return numbers.substring(0, 2) + ":" + numbers.substring(2, 3);
     } else {
-      // Exemplo: 1234 -> 12:34
+
       return numbers.substring(0, 2) + ":" + numbers.substring(2, 4);
     }
   }
 
-  // Função para validar e formatar final (ao sair do campo)
   function validateAndFormatTime(timeStr) {
     if (!timeStr || timeStr.trim() === "") {
       return {
@@ -189,10 +159,8 @@ document.addEventListener("DOMContentLoaded", function () {
       };
     }
 
-    // Remover : temporariamente para validação
     let time = timeStr.replace(/\D/g, "");
 
-    // Se não tiver números suficientes
     if (time.length < 1) {
       return {
         valid: false,
@@ -200,8 +168,6 @@ document.addEventListener("DOMContentLoaded", function () {
         display: "",
       };
     }
-
-    // Completar com zeros se necessário
     if (time.length === 1) {
       time = "0" + time + "00"; // 8 -> 08:00
     } else if (time.length === 2) {
@@ -210,14 +176,12 @@ document.addEventListener("DOMContentLoaded", function () {
       time = time.substring(0, 2) + time.substring(2, 3) + "0"; // 830 -> 08:30
     }
 
-    // Garantir formato HH:MM
     const hours = time.substring(0, 2);
     const minutes = time.substring(2, 4);
 
     const hourNum = parseInt(hours);
     const minuteNum = parseInt(minutes);
 
-    // Validar valores
     if (isNaN(hourNum) || isNaN(minuteNum)) {
       return {
         valid: false,
@@ -234,13 +198,11 @@ document.addEventListener("DOMContentLoaded", function () {
       };
     }
 
-    // Formatar para exibição
     const formattedTime = `${hours.padStart(2, "0")}:${minutes.padStart(
       2,
       "0"
     )}`;
 
-    // Validar horário comercial (8h-17h)
     if (hourNum < 8 || hourNum > 17) {
       return {
         valid: false,
@@ -250,7 +212,6 @@ document.addEventListener("DOMContentLoaded", function () {
       };
     }
 
-    // Validar horário após 17:00
     if (hourNum === 17 && minuteNum > 0) {
       return {
         valid: false,
@@ -260,7 +221,6 @@ document.addEventListener("DOMContentLoaded", function () {
       };
     }
 
-    // Validar intervalo de 30 minutos (opcional)
     if (minuteNum % 30 !== 0) {
       return {
         valid: true,
@@ -277,21 +237,19 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   }
 
-  // Função para configurar campo de horário
   function setupTimeField() {
     const timeInput = document.getElementById("time-input");
     const timeHidden = document.getElementById("time");
 
     if (!timeInput || !timeHidden) return;
 
-    // Começar com campo vazio
     timeInput.value = "";
     timeHidden.value = "";
 
-    // Adicionar placeholder sugerido
+
     timeInput.placeholder = "Das 8h às 17h";
 
-    // Criar elemento de feedback se não existir
+
     let timeFeedback = document.getElementById("time-feedback");
     if (!timeFeedback) {
       timeFeedback = document.createElement("div");
@@ -300,51 +258,50 @@ document.addEventListener("DOMContentLoaded", function () {
       timeInput.parentNode.appendChild(timeFeedback);
     }
 
-    // Variáveis para controle
+
     let lastValidTime = "";
 
-    // Evento de input (enquanto digita)
+
     timeInput.addEventListener("input", function () {
       const cursorPos = this.selectionStart;
       const oldValue = this.value;
 
-      // Aplicar formatação
+
       const formattedValue = formatTimeInput(this.value);
 
-      // Atualizar se mudou
+
       if (formattedValue !== this.value) {
         this.value = formattedValue;
 
-        // Manter cursor na posição correta
+
         const diff = formattedValue.length - oldValue.length;
         const newCursorPos = cursorPos + diff;
         this.setSelectionRange(newCursorPos, newCursorPos);
       }
 
-      // Validar
+
       updateTimeFeedback(this.value);
     });
 
-    // Evento de blur (ao sair do campo)
+
     timeInput.addEventListener("blur", function () {
       if (!this.value.trim()) return;
 
       const validation = validateAndFormatTime(this.value);
 
       if (validation.valid) {
-        // Se tiver warning, apenas mostrar mas aceitar
+  
         if (validation.warning) {
           showTimeFeedback(validation.warning, "warning");
         }
 
-        // Formatar corretamente
+
         this.value = validation.formatted;
         timeHidden.value = validation.formatted;
         lastValidTime = validation.formatted;
 
         updateTimeFeedback(this.value);
       } else if (validation.suggestion) {
-        // Sugerir horário alternativo
         this.value = validation.suggestion;
         timeHidden.value = validation.suggestion;
         lastValidTime = validation.suggestion;
@@ -357,13 +314,13 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // Evento de focus (ao entrar no campo)
+
     timeInput.addEventListener("focus", function () {
       this.classList.remove("border-red-300", "border-green-300");
       this.classList.add("border-amber-500");
     });
 
-    // Função para atualizar feedback visual
+
     function updateTimeFeedback(value) {
       if (!value.trim()) {
         timeFeedback.textContent = "Digite o horário desejado (8h às 17h)";
@@ -407,7 +364,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // Função para mostrar feedback temporário
+
     function showTimeFeedback(message, type = "info") {
       const tempFeedback = document.createElement("div");
       tempFeedback.className = `text-xs mt-1 font-medium ${
@@ -416,13 +373,13 @@ document.addEventListener("DOMContentLoaded", function () {
       tempFeedback.textContent = message;
       tempFeedback.id = "temp-feedback";
 
-      // Remover feedback anterior se existir
+
       const existing = document.getElementById("temp-feedback");
       if (existing) existing.remove();
 
       timeInput.parentNode.appendChild(tempFeedback);
 
-      // Remover após 3 segundos
+
       setTimeout(() => {
         if (tempFeedback.parentNode) {
           tempFeedback.remove();
@@ -430,11 +387,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }, 3000);
     }
 
-    // Adicionar sugestões de horários populares
     addTimeSuggestions();
   }
 
-  // Adicionar sugestões de horários abaixo do campo
   function addTimeSuggestions() {
     const timeInput = document.getElementById("time-input");
     if (!timeInput) return;
@@ -461,23 +416,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ========== SISTEMA DE SERVIÇOS (RADIO BUTTONS) ==========
   function setupServiceSelection() {
     const serviceInputs = document.querySelectorAll('input[name="service"]');
     const serviceHidden = document.getElementById("service-hidden");
 
     if (!serviceHidden || serviceInputs.length === 0) return;
 
-    // Inicializar como vazio
+
     serviceHidden.value = "";
 
-    // Adicionar evento a cada radio button
+
     serviceInputs.forEach((input) => {
       input.addEventListener("change", function () {
         if (this.checked) {
           serviceHidden.value = this.value;
 
-          // Adicionar classe de seleção visual
+
           const allLabels = document.querySelectorAll(
             'input[name="service"] + label'
           );
@@ -494,7 +448,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
 
-      // Adicionar evento de clique também no label
       const label = input.nextElementSibling;
       if (label) {
         label.addEventListener("click", () => {
@@ -505,7 +458,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ========== SISTEMA DE MEIO DE PAGAMENTO ==========
   function setupPaymentSelection() {
     const paymentInputs = document.querySelectorAll(
       'input[name="payment-method"]'
@@ -519,16 +471,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!paymentHidden || paymentInputs.length === 0) return;
 
-    // Inicializar como vazio
+
     paymentHidden.value = "";
 
-    // Adicionar evento a cada radio button
+
     paymentInputs.forEach((input) => {
       input.addEventListener("change", function () {
         if (this.checked) {
           paymentHidden.value = this.value;
 
-          // Adicionar classe de seleção visual
           const allLabels = document.querySelectorAll(
             'input[name="payment-method"] + label'
           );
@@ -543,7 +494,6 @@ document.addEventListener("DOMContentLoaded", function () {
             currentLabel.classList.remove("border-gray-200");
           }
 
-          // Mostrar/ocultar avisos baseados no pagamento selecionado
           if (this.value === "Pix") {
             if (pixWarning) {
               pixWarning.classList.remove("hidden");
@@ -570,7 +520,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
 
-      // Adicionar evento de clique também no label
       const label = input.nextElementSibling;
       if (label) {
         label.addEventListener("click", () => {
@@ -580,15 +529,15 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // Configurar botão de copiar chave Pix
+
     if (copyPixBtn && pixChaveInput) {
       copyPixBtn.addEventListener("click", function () {
         if (!pixChaveInput.value.trim()) {
-          pixChaveInput.value = "5588994202290"; // Chave padrão
+          pixChaveInput.value = "000000000000"; // Chave padrão
         }
 
         pixChaveInput.select();
-        pixChaveInput.setSelectionRange(0, 99999); // Para mobile
+        pixChaveInput.setSelectionRange(0, 99999);
 
         try {
           navigator.clipboard.writeText(pixChaveInput.value).then(() => {
@@ -605,7 +554,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 2000);
           });
         } catch (err) {
-          // Fallback para navegadores antigos
           document.execCommand("copy");
           const originalText = copyPixBtn.innerHTML;
           copyPixBtn.innerHTML =
@@ -622,12 +570,9 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   }
-
-  // ========== INICIALIZAR SISTEMA DE AGENDAMENTO ==========
   function initBookingSystem() {
     console.log("Inicializando sistema de agendamento...");
 
-    // 1. CONFIGURAR DATA AUTOMÁTICA
     const dateDisplay = document.getElementById("date-display");
     const dateInput = document.getElementById("date");
     const dateContainer = document.getElementById("date-container");
@@ -643,13 +588,10 @@ document.addEventListener("DOMContentLoaded", function () {
       dateContainer.classList.add("bg-amber-50", "border-amber-200");
     }
 
-    // 2. CONFIGURAR CAMPO DE NOME - GARANTIR QUE ESTÁ VAZIO
     const nameInput = document.getElementById("name");
     if (nameInput) {
-      // FORÇAR O CAMPO A FICAR VAZIO SEMPRE
       nameInput.value = "";
 
-      // Configurar evento de input simples
       nameInput.addEventListener("input", function () {
         if (this.value.trim()) {
           this.classList.remove("border-red-300");
@@ -660,32 +602,28 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // 3. CONFIGURAR CAMPO DE SERVIÇO (RADIO BUTTONS)
     setupServiceSelection();
 
-    // 4. CONFIGURAR CAMPO DE PAGAMENTO (RADIO BUTTONS)
+
     setupPaymentSelection();
 
-    // 5. CONFIGURAR CAMPO DE HORÁRIO - USANDO NOVO SISTEMA
     setupTimeField();
 
-    // 6. CONFIGURAR OBSERVAÇÕES
     const observationsInput = document.getElementById("observations");
     if (observationsInput) {
       observationsInput.value = "";
     }
   }
 
-  // Inicializar sistema de agendamento
+
   initBookingSystem();
 
-  // ========== FORMULÁRIO DE WHATSAPP COM MENSAGEM BEM FORMATADA ==========
   if (bookingForm) {
     bookingForm.addEventListener("submit", function (e) {
       e.preventDefault();
       e.stopPropagation();
 
-      // Elementos
+
       const nameInput = document.getElementById("name");
       const serviceHidden = document.getElementById("service-hidden");
       const paymentHidden = document.getElementById("payment-hidden");
@@ -695,7 +633,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const timeInput = document.getElementById("time-input");
       const observationsInput = document.getElementById("observations");
 
-      // Validação básica
+    
       let isValid = true;
       const errors = [];
 
@@ -710,7 +648,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!serviceHidden || !serviceHidden.value) {
         isValid = false;
         errors.push("Serviço");
-        // Destacar todos os botões de serviço
+
         const serviceLabels = document.querySelectorAll(
           'input[name="service"] + label'
         );
@@ -726,11 +664,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
 
-      // Validação do meio de pagamento
+o
       if (!paymentHidden || !paymentHidden.value) {
         isValid = false;
         errors.push("Meio de Pagamento");
-        // Destacar todos os botões de pagamento
+
         const paymentLabels = document.querySelectorAll(
           'input[name="payment-method"] + label'
         );
@@ -746,28 +684,27 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
 
-      // Validação específica para Pix
+
       if (paymentHidden && paymentHidden.value === "Pix") {
         if (!pixChaveInput || !pixChaveInput.value.trim()) {
-          // Preencher automaticamente se estiver vazio
           if (pixChaveInput) {
-            pixChaveInput.value = "5588994202290";
+            pixChaveInput.value = "0000000000000";
           }
         }
       }
 
-      // VALIDAÇÃO ESPECÍFICA DO HORÁRIO
+
       if (!timeHidden || !timeHidden.value) {
         isValid = false;
         errors.push("Horário");
         if (timeInput) {
           timeInput.classList.add("border-red-500", "ring-2", "ring-red-200");
-          // Scroll para o campo
+
           timeInput.scrollIntoView({ behavior: "smooth", block: "center" });
           timeInput.focus();
         }
       } else {
-        // Validar formato final
+
         const validation = validateAndFormatTime(timeHidden.value);
         if (!validation.valid) {
           isValid = false;
@@ -792,7 +729,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // Obter valores
+
       const name = nameInput.value.trim();
       const service = serviceHidden.value;
       const paymentMethod = paymentHidden.value;
@@ -806,7 +743,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ? observationsInput.value.trim()
         : "";
 
-      // Formatar data para mensagem
+
       const dateObj = new Date(dateValue);
       const dateFormatted = dateObj.toLocaleDateString("pt-BR", {
         weekday: "long",
@@ -815,25 +752,25 @@ document.addEventListener("DOMContentLoaded", function () {
         year: "numeric",
       });
 
-      // Capitalizar primeira letra
+
       const dateDisplay =
         dateFormatted.charAt(0).toUpperCase() + dateFormatted.slice(1);
 
-      // Formatar hora para exibição
+
       const [hours, minutes] = timeValue.split(":");
       const timeDisplay =
         minutes === "00"
           ? `${parseInt(hours)}h`
           : `${parseInt(hours)}h${minutes}`;
 
-      // ========== MENSAGEM BEM FORMATADA PARA WHATSAPP ==========
+
       let message =
         `*AGENDAMENTO - BARBEARIA SOARES*\n\n` +
         `👤 *Cliente:* ${name}\n` +
         `✂️ *Serviço:* ${service}\n` +
         `💳 *Pagamento:* ${paymentMethod}\n`;
 
-      // Adicionar chave Pix se for o caso
+
       if (paymentMethod === "Pix" && pixChave) {
         message += `🔑 *Chave Pix:* ${pixChave}\n`;
       }
@@ -850,7 +787,7 @@ document.addEventListener("DOMContentLoaded", function () {
         `\n📍 *Local:* R. Padre Cícero, 185 – Centro, Missão Velha - CE\n\n` +
         `_Por favor, confirme a disponibilidade deste horário._`;
 
-      // Instrução específica para Pix
+
       if (paymentMethod === "Pix") {
         message +=
           `\n\n📋 *INSTRUÇÃO PARA PIX:*\n` +
@@ -860,20 +797,20 @@ document.addEventListener("DOMContentLoaded", function () {
           `4. Em caso de não comparecimento, não haverá devolução`;
       }
 
-      // VERIFICAR SE WHATSAPP_NUMBER ESTÁ DEFINIDO
+
       if (typeof WHATSAPP_NUMBER === "undefined") {
         alert("Erro: Número do WhatsApp não configurado. Contate o suporte.");
         return;
       }
 
-      // Usar encodeURIComponent corretamente
+
       const encodedMessage = encodeURIComponent(message);
       const whatsappUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodedMessage}`;
 
-      // Abrir WhatsApp
+
       const newWindow = window.open(whatsappUrl, "_blank");
 
-      // Feedback visual
+
       const submitBtn = this.querySelector('button[type="submit"]');
       if (submitBtn) {
         const originalHTML = submitBtn.innerHTML;
@@ -887,9 +824,9 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
         submitBtn.disabled = true;
 
-        // Reset após 1.5 segundos
+
         setTimeout(() => {
-          // Limpar TODOS os campos COMPLETAMENTE
+       
           if (nameInput) {
             nameInput.value = "";
             nameInput.classList.remove(
@@ -900,7 +837,7 @@ document.addEventListener("DOMContentLoaded", function () {
             );
           }
 
-          // Limpar seleção de serviço
+
           const serviceInputs = document.querySelectorAll(
             'input[name="service"]'
           );
@@ -924,7 +861,7 @@ document.addEventListener("DOMContentLoaded", function () {
             serviceHidden.value = "";
           }
 
-          // Limpar seleção de pagamento
+
           const paymentInputs = document.querySelectorAll(
             'input[name="payment-method"]'
           );
@@ -948,7 +885,6 @@ document.addEventListener("DOMContentLoaded", function () {
             paymentHidden.value = "";
           }
 
-          // Ocultar avisos
           const pixWarning = document.getElementById("pix-warning");
           if (pixWarning) {
             pixWarning.classList.add("hidden");
@@ -960,13 +896,13 @@ document.addEventListener("DOMContentLoaded", function () {
             otherPaymentInfo.classList.add("hidden");
           }
 
-          // Limpar chave Pix
+
           const pixChaveInput = document.getElementById("pix-chave");
           if (pixChaveInput) {
             pixChaveInput.value = "";
           }
 
-          // Limpar campo de hora COMPLETAMENTE
+
           const timeInputField = document.getElementById("time-input");
           if (timeInputField) {
             timeInputField.value = "";
@@ -982,46 +918,45 @@ document.addEventListener("DOMContentLoaded", function () {
             timeInputField.classList.add("border-gray-300");
           }
 
-          // Limpar feedback
+
           const timeFeedback = document.getElementById("time-feedback");
           if (timeFeedback) {
             timeFeedback.textContent = "Digite o horário desejado (8h às 17h)";
             timeFeedback.className = "text-xs mt-1 text-gray-500";
           }
 
-          // Limpar campo hidden
+
           if (timeHidden) {
             timeHidden.value = "";
           }
 
-          // Limpar observações
+
           if (observationsInput) {
             observationsInput.value = "";
           }
 
-          // Remover sugestões temporárias
+ 
           const tempFeedback = document.getElementById("temp-feedback");
           if (tempFeedback) {
             tempFeedback.remove();
           }
 
-          // Restaurar botão
+
           submitBtn.innerHTML = originalHTML;
           submitBtn.disabled = false;
 
-          // Focar no nome
+
           if (nameInput) {
             nameInput.focus();
           }
 
-          // Recalcular data (caso tenha passado tempo)
+
           setTimeout(initBookingSystem, 100);
         }, 1500);
       }
     });
   }
 
-  // Configuração Tailwind
   if (typeof tailwind !== "undefined") {
     tailwind.config = {
       theme: {
@@ -1051,3 +986,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
   console.log("✅ Sistema JavaScript inicializado com sucesso!");
 });
+
