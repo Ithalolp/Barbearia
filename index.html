@@ -11,6 +11,7 @@
       name="description"
       content="Barbearia especializada em cortes, barba e tratamentos masculinos. Agende seu horário pelo WhatsApp."
     />
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/style/style.css" />
     <link rel="stylesheet" href="/style/animação suave.css" />
@@ -23,6 +24,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body
@@ -31,6 +33,7 @@
     <script>
       const WHATSAPP_NUMBER = "5588994202290";
     </script>
+
     <nav
       id="navbar"
       class="fixed w-full z-50 transition-all duration-300 transparent-nav"
@@ -77,6 +80,7 @@
             Agendar Agora
           </a>
         </div>
+
         <button
           id="mobile-menu-btn"
           class="md:hidden focus:outline-none text-white"
@@ -123,12 +127,13 @@
         </a>
       </div>
     </nav>
+
     <section
       class="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden"
     >
       <div class="absolute inset-0 z-0">
         <img
-          src="/img/Logo-barbearia.jpg"
+          src="/img/barber-shop-tools-arrangement.jpg"
           alt="Salão de luxo"
           class="w-full h-full object-cover"
         />
@@ -243,6 +248,7 @@
         </div>
       </div>
     </section>
+
     <section id="servicos" class="py-20 bg-gray-900 text-white">
       <div class="container mx-auto px-4">
         <div class="text-center mb-16">
@@ -255,7 +261,6 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <!-- Service 1 -->
           <div
             class="group bg-gray-800 p-8 rounded-2xl hover:bg-gray-700 transition-colors border border-gray-700 hover:border-amber-600/50"
           >
@@ -276,6 +281,7 @@
               >
             </div>
           </div>
+
           <div
             class="group bg-gray-800 p-8 rounded-2xl hover:bg-gray-700 transition-colors border border-gray-700 hover:border-amber-600/50"
           >
@@ -296,6 +302,7 @@
               >
             </div>
           </div>
+
           <div
             class="group bg-gray-800 p-8 rounded-2xl hover:bg-gray-700 transition-colors border border-gray-700 hover:border-amber-600/50"
           >
@@ -314,6 +321,7 @@
               <span class="text-amber-500 font-bold text-sm">R$ - R$</span>
             </div>
           </div>
+
           <div
             class="group bg-gray-800 p-8 rounded-2xl hover:bg-gray-700 transition-colors border border-gray-700 hover:border-amber-600/50"
           >
@@ -335,6 +343,7 @@
         </div>
       </div>
     </section>
+
     <section id="galeria" class="py-20 bg-gray-50">
       <div class="container mx-auto px-4">
         <div
@@ -384,6 +393,7 @@
         </div>
       </div>
     </section>
+
     <section id="Pagamento" class="py-20 bg-amber-50 border-t border-amber-100">
       <div class="container mx-auto px-4">
         <div
@@ -406,7 +416,6 @@
           <div class="hidden md:block w-px h-16 bg-amber-200"></div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- PIX -->
             <div
               class="group bg-white p-8 rounded-2xl shadow-sm border border-amber-100 hover:shadow-lg transition-all hover:scale-105 cursor-pointer"
             >
@@ -427,6 +436,7 @@
                 </span>
               </div>
             </div>
+
             <div
               class="group bg-white p-8 rounded-2xl shadow-sm border border-amber-100 hover:shadow-lg transition-all hover:scale-105 cursor-pointer"
             >
@@ -473,6 +483,7 @@
         </div>
       </div>
     </section>
+
     <section
       id="agendar"
       class="py-20 bg-gray-900 text-white relative overflow-hidden"
@@ -504,19 +515,29 @@
               class="bg-gray-800/50 p-6 rounded-xl border border-gray-700 mt-8"
             >
               <h4 class="flex items-center gap-2 font-bold mb-4 text-amber-500">
-                <i data-lucide="clock" class="w-5 h-5"></i> Informações Importantes
+                <i data-lucide="clock" class="w-5 h-5"></i> Informações
+                Importantes
               </h4>
               <ul class="space-y-3 text-sm text-gray-300">
                 <li class="flex items-start gap-2">
-                  <i data-lucide="info" class="text-amber-500 w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                  <i
+                    data-lucide="info"
+                    class="text-amber-500 w-4 h-4 mt-0.5 flex-shrink-0"
+                  ></i>
                   <span>Agendamentos confirmados somente após pagamento</span>
                 </li>
                 <li class="flex items-start gap-2">
-                  <i data-lucide="clock" class="text-amber-500 w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                  <i
+                    data-lucide="clock"
+                    class="text-amber-500 w-4 h-4 mt-0.5 flex-shrink-0"
+                  ></i>
                   <span>Chegue 5 minutos antes do horário agendado</span>
                 </li>
                 <li class="flex items-start gap-2">
-                  <i data-lucide="alert-circle" class="text-amber-500 w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                  <i
+                    data-lucide="alert-circle"
+                    class="text-amber-500 w-4 h-4 mt-0.5 flex-shrink-0"
+                  ></i>
                   <span>Cancelamentos com até 1 hora de antecedência</span>
                 </li>
               </ul>
@@ -531,7 +552,9 @@
                 <label class="block text-sm font-bold text-gray-700 mb-2">
                   <div class="flex items-center justify-between">
                     <span>Seu Nome</span>
-                    <span class="text-xs text-gray-500 font-normal">*Obrigatório</span>
+                    <span class="text-xs text-gray-500 font-normal"
+                      >*Obrigatório</span
+                    >
                   </div>
                 </label>
                 <input
@@ -553,85 +576,193 @@
                 <label class="block text-sm font-bold text-gray-700 mb-2">
                   <div class="flex items-center justify-between">
                     <span>Serviço Desejado</span>
-                    <span class="text-xs text-gray-500 font-normal">*Obrigatório</span>
+                    <span class="text-xs text-gray-500 font-normal"
+                      >*Obrigatório</span
+                    >
                   </div>
                 </label>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                   <div class="relative">
-                    <input type="radio" id="corte-cabelo" name="service" value="Corte de Cabelo" class="hidden peer">
-                    <label for="corte-cabelo" class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200">
-                      <i data-lucide="scissors" class="w-6 h-6 text-gray-700 mb-2"></i>
+                    <input
+                      type="radio"
+                      id="corte-cabelo"
+                      name="service"
+                      value="Corte de Cabelo"
+                      class="hidden peer"
+                    />
+                    <label
+                      for="corte-cabelo"
+                      class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200"
+                    >
+                      <i
+                        data-lucide="scissors"
+                        class="w-6 h-6 text-gray-700 mb-2"
+                      ></i>
                       <span class="text-sm font-medium">Corte de Cabelo</span>
-                      <span class="text-xs text-gray-500 mt-1">A partir de R$ 25</span>
+                      <span class="text-xs text-gray-500 mt-1"
+                        >A partir de R$ 25</span
+                      >
                     </label>
                   </div>
-                  
+
                   <div class="relative">
-                    <input type="radio" id="barba" name="service" value="Barba" class="hidden peer">
-                    <label for="barba" class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200">
-                      <i data-lucide="brush" class="w-6 h-6 text-gray-700 mb-2"></i>
+                    <input
+                      type="radio"
+                      id="barba"
+                      name="service"
+                      value="Barba"
+                      class="hidden peer"
+                    />
+                    <label
+                      for="barba"
+                      class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200"
+                    >
+                      <i
+                        data-lucide="brush"
+                        class="w-6 h-6 text-gray-700 mb-2"
+                      ></i>
                       <span class="text-sm font-medium">Barba</span>
-                      <span class="text-xs text-gray-500 mt-1">A partir de R$ 15</span>
+                      <span class="text-xs text-gray-500 mt-1"
+                        >A partir de R$ 15</span
+                      >
                     </label>
                   </div>
-                  
+
                   <div class="relative">
-                    <input type="radio" id="corte-barba" name="service" value="Corte + Barba" class="hidden peer">
-                    <label for="corte-barba" class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200">
-                      <i data-lucide="sparkles" class="w-6 h-6 text-gray-700 mb-2"></i>
+                    <input
+                      type="radio"
+                      id="corte-barba"
+                      name="service"
+                      value="Corte + Barba"
+                      class="hidden peer"
+                    />
+                    <label
+                      for="corte-barba"
+                      class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200"
+                    >
+                      <i
+                        data-lucide="sparkles"
+                        class="w-6 h-6 text-gray-700 mb-2"
+                      ></i>
                       <span class="text-sm font-medium">Corte + Barba</span>
-                      <span class="text-xs text-gray-500 mt-1">Pacote especial</span>
+                      <span class="text-xs text-gray-500 mt-1"
+                        >Pacote especial</span
+                      >
                     </label>
                   </div>
-                  
+
                   <div class="relative">
-                    <input type="radio" id="sobrancelha" name="service" value="Sobrancelha" class="hidden peer">
-                    <label for="sobrancelha" class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200">
-                      <i data-lucide="eye" class="w-6 h-6 text-gray-700 mb-2"></i>
+                    <input
+                      type="radio"
+                      id="sobrancelha"
+                      name="service"
+                      value="Sobrancelha"
+                      class="hidden peer"
+                    />
+                    <label
+                      for="sobrancelha"
+                      class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200"
+                    >
+                      <i
+                        data-lucide="eye"
+                        class="w-6 h-6 text-gray-700 mb-2"
+                      ></i>
                       <span class="text-sm font-medium">Sobrancelha</span>
-                      <span class="text-xs text-gray-500 mt-1">Design profissional</span>
+                      <span class="text-xs text-gray-500 mt-1"
+                        >Design profissional</span
+                      >
                     </label>
                   </div>
                 </div>
-                <input type="hidden" id="service-hidden" name="service" required />
+                <input
+                  type="hidden"
+                  id="service-hidden"
+                  name="service"
+                  required
+                />
                 <p class="text-xs text-gray-500 mt-1">
                   Selecione o serviço desejado clicando na opção
                 </p>
               </div>
+
               <div>
                 <label class="block text-sm font-bold text-gray-700 mb-2">
                   <div class="flex items-center justify-between">
                     <span>Meio de Pagamento</span>
-                    <span class="text-xs text-gray-500 font-normal">*Obrigatório</span>
+                    <span class="text-xs text-gray-500 font-normal"
+                      >*Obrigatório</span
+                    >
                   </div>
                 </label>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
                   <div class="relative">
-                    <input type="radio" id="pix-payment" name="payment-method" value="Pix" class="hidden peer">
-                    <label for="pix-payment" class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200">
-                      <i data-lucide="qr-code" class="w-6 h-6 text-gray-700 mb-2"></i>
+                    <input
+                      type="radio"
+                      id="pix-payment"
+                      name="payment-method"
+                      value="Pix"
+                      class="hidden peer"
+                    />
+                    <label
+                      for="pix-payment"
+                      class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200"
+                    >
+                      <i
+                        data-lucide="qr-code"
+                        class="w-6 h-6 text-gray-700 mb-2"
+                      ></i>
                       <span class="text-sm font-medium">Pix</span>
                     </label>
                   </div>
-                  
+
                   <div class="relative">
-                    <input type="radio" id="cartao-payment" name="payment-method" value="Cartão" class="hidden peer">
-                    <label for="cartao-payment" class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200">
-                      <i data-lucide="credit-card" class="w-6 h-6 text-gray-700 mb-2"></i>
+                    <input
+                      type="radio"
+                      id="cartao-payment"
+                      name="payment-method"
+                      value="Cartão"
+                      class="hidden peer"
+                    />
+                    <label
+                      for="cartao-payment"
+                      class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200"
+                    >
+                      <i
+                        data-lucide="credit-card"
+                        class="w-6 h-6 text-gray-700 mb-2"
+                      ></i>
                       <span class="text-sm font-medium">Cartão</span>
                     </label>
                   </div>
-                  
+
                   <div class="relative">
-                    <input type="radio" id="dinheiro-payment" name="payment-method" value="Dinheiro" class="hidden peer">
-                    <label for="dinheiro-payment" class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200">
-                      <i data-lucide="banknote" class="w-6 h-6 text-gray-700 mb-2"></i>
+                    <input
+                      type="radio"
+                      id="dinheiro-payment"
+                      name="payment-method"
+                      value="Dinheiro"
+                      class="hidden peer"
+                    />
+                    <label
+                      for="dinheiro-payment"
+                      class="flex flex-col items-center justify-center p-4 bg-gray-50 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:bg-gray-100 transition-all duration-200"
+                    >
+                      <i
+                        data-lucide="banknote"
+                        class="w-6 h-6 text-gray-700 mb-2"
+                      ></i>
                       <span class="text-sm font-medium">Dinheiro</span>
                     </label>
                   </div>
                 </div>
-                <input type="hidden" id="payment-hidden" name="payment-method" required />
-               <div
+                <input
+                  type="hidden"
+                  id="payment-hidden"
+                  name="payment-method"
+                  required
+                />
+
+                <div
                   id="pix-warning"
                   class="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg hidden transition-all duration-300"
                 >
@@ -684,11 +815,16 @@
                     </div>
                   </div>
                 </div>
+
                 <div id="other-payment-info" class="mt-3 hidden">
                   <div class="flex items-start gap-2">
-                    <i data-lucide="info" class="text-blue-600 w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                    <i
+                      data-lucide="info"
+                      class="text-blue-600 w-4 h-4 mt-0.5 flex-shrink-0"
+                    ></i>
                     <p class="text-xs text-blue-700">
-                      Pagamento será realizado no local no momento do atendimento.
+                      Pagamento será realizado no local no momento do
+                      atendimento.
                     </p>
                   </div>
                 </div>
@@ -698,7 +834,9 @@
                 <label class="block text-sm font-bold text-gray-700 mb-2">
                   <div class="flex items-center justify-between">
                     <span>Data do Agendamento</span>
-                    <span class="text-xs text-gray-500 font-normal">Automático</span>
+                    <span class="text-xs text-gray-500 font-normal"
+                      >Automático</span
+                    >
                   </div>
                 </label>
                 <div
@@ -726,11 +864,14 @@
                   Data automática: Hoje até as 17h. Se for após, será amanhã.
                 </p>
               </div>
+
               <div>
                 <label class="block text-sm font-bold text-gray-700 mb-2">
                   <div class="flex items-center justify-between">
                     <span>Horário Preferencial</span>
-                    <span class="text-xs text-gray-500 font-normal">*Obrigatório</span>
+                    <span class="text-xs text-gray-500 font-normal"
+                      >*Obrigatório</span
+                    >
                   </div>
                 </label>
                 <div class="relative">
@@ -751,10 +892,11 @@
                 <div id="time-feedback" class="text-xs mt-1 text-gray-500">
                   Digite o horário desejado (8h às 17h)
                 </div>
-                
-                <div id="time-suggestions" class="flex flex-wrap gap-2 mt-2">
-                  <!-- Será preenchido via JavaScript -->
-                </div>
+
+                <div
+                  id="time-suggestions"
+                  class="flex flex-wrap gap-2 mt-2"
+                ></div>
               </div>
 
               <button
@@ -770,7 +912,8 @@
               </button>
 
               <p class="text-center text-xs text-gray-400 mt-2">
-                *O horário será confirmado pelo profissional em até 10 minutos após o pagamento.
+                *O horário será confirmado pelo profissional em até 10 minutos
+                após o pagamento.
               </p>
             </form>
           </div>
@@ -780,7 +923,6 @@
 
     <section id="contato" class="responsive-section py-12 md:py-20 bg-white">
       <div class="container mx-auto px-4">
-
         <div class="text-center mb-8 md:mb-12">
           <h2
             class="text-2xl md:text-4xl font-bold font-serif text-gray-900 mb-2"
@@ -792,7 +934,6 @@
             coração de Missão Velha.
           </p>
         </div>
-
         <div class="map-address-mobile hidden md:block lg:hidden mb-6">
           <div class="flex items-center gap-4">
             <div class="flex-shrink-0">
@@ -808,9 +949,7 @@
           </div>
         </div>
 
-
         <div class="flex flex-col lg:flex-row gap-6 md:gap-8">
-
           <div class="w-full lg:w-2/3">
             <div class="map-container rounded-xl overflow-hidden shadow-lg">
               <iframe
@@ -826,7 +965,6 @@
               ></iframe>
             </div>
           </div>
-
 
           <div class="w-full lg:w-1/3">
             <div
@@ -925,6 +1063,7 @@
               </a>
             </div>
           </div>
+
           <div>
             <h4 class="text-lg font-bold mb-6 text-amber-500">Links Rápidos</h4>
             <ul class="space-y-3 text-gray-400">
@@ -990,6 +1129,3 @@
     <script src="/src/animações.js"></script>
   </body>
 </html>
-
-
-
