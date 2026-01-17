@@ -11,36 +11,26 @@
       name="description"
       content="Barbearia especializada em cortes, barba e tratamentos masculinos. Agende seu horário pelo WhatsApp."
     />
-
-    <!-- Tailwind CSS (Estilização Moderna) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/style/style.css" />
     <link rel="stylesheet" href="/style/animação suave.css" />
 
-    <!-- Fontes Google (Inter para texto, Playfair Display para títulos) -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-    <!-- Ícones Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-
-    <!-- Ícones Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body
     class="text-gray-800 bg-gray-50 antialiased selection:bg-amber-200 selection:text-amber-900"
   >
-    <!-- Configuração do Número do WhatsApp -->
     <script>
-      // ATENÇÃO: Mude este número para o número real do salão
       const WHATSAPP_NUMBER = "5588994202290";
     </script>
-
-    <!-- Navigation -->
     <nav
       id="navbar"
       class="fixed w-full z-50 transition-all duration-300 transparent-nav"
@@ -48,14 +38,12 @@
       <div
         class="container mx-auto px-4 md:px-8 flex justify-between items-center"
       >
-        <!-- Logo -->
         <span
           id="logo-text"
           class="text-amber-500 transition-colors group-hover:text-amber-400 text-2xl font-serif font-bold tracking-widest flex items-center gap-1 py-4"
           >BARBEARIA SOARES</span
         >
 
-        <!-- Desktop Menu -->
         <div class="hidden md:flex space-x-8 items-center">
           <a
             href="#sobre"
@@ -89,8 +77,6 @@
             Agendar Agora
           </a>
         </div>
-
-        <!-- Mobile Menu Button -->
         <button
           id="mobile-menu-btn"
           class="md:hidden focus:outline-none text-white"
@@ -99,7 +85,6 @@
         </button>
       </div>
 
-      <!-- Mobile Menu Overlay -->
       <div
         id="mobile-menu"
         class="fixed inset-0 bg-gray-900/95 backdrop-blur-lg z-40 flex flex-col items-center justify-center space-y-8 transition-transform duration-300 translate-x-full md:hidden h-screen top-0"
@@ -138,8 +123,6 @@
         </a>
       </div>
     </nav>
-
-    <!-- Hero Section -->
     <section
       class="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden"
     >
@@ -193,7 +176,6 @@
       </div>
     </section>
 
-    <!-- About Section -->
     <section id="sobre" class="py-20 md:py-32 bg-white">
       <div class="container mx-auto px-4">
         <div class="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
@@ -261,8 +243,6 @@
         </div>
       </div>
     </section>
-
-    <!-- Services Section -->
     <section id="servicos" class="py-20 bg-gray-900 text-white">
       <div class="container mx-auto px-4">
         <div class="text-center mb-16">
@@ -296,8 +276,6 @@
               >
             </div>
           </div>
-
-          <!-- Service 2 -->
           <div
             class="group bg-gray-800 p-8 rounded-2xl hover:bg-gray-700 transition-colors border border-gray-700 hover:border-amber-600/50"
           >
@@ -318,8 +296,6 @@
               >
             </div>
           </div>
-
-          <!-- Service 3 -->
           <div
             class="group bg-gray-800 p-8 rounded-2xl hover:bg-gray-700 transition-colors border border-gray-700 hover:border-amber-600/50"
           >
@@ -338,8 +314,6 @@
               <span class="text-amber-500 font-bold text-sm">R$ - R$</span>
             </div>
           </div>
-
-          <!-- Service 4 -->
           <div
             class="group bg-gray-800 p-8 rounded-2xl hover:bg-gray-700 transition-colors border border-gray-700 hover:border-amber-600/50"
           >
@@ -361,8 +335,6 @@
         </div>
       </div>
     </section>
-
-    <!-- Gallery Section -->
     <section id="galeria" class="py-20 bg-gray-50">
       <div class="container mx-auto px-4">
         <div
@@ -412,8 +384,6 @@
         </div>
       </div>
     </section>
-    
-    <!-- Seção de Formas de Pagamento (Adicionada) -->
     <section id="Pagamento" class="py-20 bg-amber-50 border-t border-amber-100">
       <div class="container mx-auto px-4">
         <div
@@ -457,8 +427,6 @@
                 </span>
               </div>
             </div>
-
-            <!-- Cartões -->
             <div
               class="group bg-white p-8 rounded-2xl shadow-sm border border-amber-100 hover:shadow-lg transition-all hover:scale-105 cursor-pointer"
             >
@@ -480,7 +448,6 @@
               </div>
             </div>
 
-            <!-- Dinheiro -->
             <div
               class="group bg-white p-8 rounded-2xl shadow-sm border border-amber-100 hover:shadow-lg transition-all hover:scale-105 cursor-pointer"
             >
@@ -506,8 +473,6 @@
         </div>
       </div>
     </section>
-
-    <!-- Booking Section -->
     <section
       id="agendar"
       class="py-20 bg-gray-900 text-white relative overflow-hidden"
@@ -635,8 +600,6 @@
                   Selecione o serviço desejado clicando na opção
                 </p>
               </div>
-
-              <!-- Campo Meio de Pagamento -->
               <div>
                 <label class="block text-sm font-bold text-gray-700 mb-2">
                   <div class="flex items-center justify-between">
@@ -670,8 +633,6 @@
                   </div>
                 </div>
                 <input type="hidden" id="payment-hidden" name="payment-method" required />
-                
-                <!-- Elemento de aviso para Pix (inicialmente escondido) -->
                 <div id="pix-warning" class="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg hidden transition-all duration-300">
                   <div class="flex items-start gap-3">
                     <i data-lucide="alert-triangle" class="text-amber-600 mt-0.5 w-5 h-5 flex-shrink-0"></i>
@@ -708,8 +669,6 @@
                     </div>
                   </div>
                 </div>
-                
-                <!-- Observações para outros métodos -->
                 <div id="other-payment-info" class="mt-3 hidden">
                   <div class="flex items-start gap-2">
                     <i data-lucide="info" class="text-blue-600 w-4 h-4 mt-0.5 flex-shrink-0"></i>
@@ -720,7 +679,6 @@
                 </div>
               </div>
 
-              <!-- Data Automática -->
               <div>
                 <label class="block text-sm font-bold text-gray-700 mb-2">
                   <div class="flex items-center justify-between">
@@ -753,8 +711,6 @@
                   Data automática: Hoje até as 17h. Se for após, será amanhã.
                 </p>
               </div>
-
-              <!-- Horário com Formatação Inteligente -->
               <div>
                 <label class="block text-sm font-bold text-gray-700 mb-2">
                   <div class="flex items-center justify-between">
@@ -781,13 +737,11 @@
                   Digite o horário desejado (8h às 17h)
                 </div>
                 
-                <!-- Sugestões de horário -->
                 <div id="time-suggestions" class="flex flex-wrap gap-2 mt-2">
                   <!-- Será preenchido via JavaScript -->
                 </div>
               </div>
 
-              <!-- Botão de Envio -->
               <button
                 type="submit"
                 class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-all transform hover:-translate-y-1 active:scale-95"
@@ -809,10 +763,9 @@
       </div>
     </section>
 
-    <!-- Location Section -->
     <section id="contato" class="responsive-section py-12 md:py-20 bg-white">
       <div class="container mx-auto px-4">
-        <!-- Título -->
+
         <div class="text-center mb-8 md:mb-12">
           <h2
             class="text-2xl md:text-4xl font-bold font-serif text-gray-900 mb-2"
@@ -824,7 +777,7 @@
             coração de Missão Velha.
           </p>
         </div>
-        <!-- Endereço Tablet -->
+
         <div class="map-address-mobile hidden md:block lg:hidden mb-6">
           <div class="flex items-center gap-4">
             <div class="flex-shrink-0">
@@ -840,9 +793,9 @@
           </div>
         </div>
 
-        <!-- Mapa e Informações -->
+
         <div class="flex flex-col lg:flex-row gap-6 md:gap-8">
-          <!-- Mapa -->
+
           <div class="w-full lg:w-2/3">
             <div class="map-container rounded-xl overflow-hidden shadow-lg">
               <iframe
@@ -859,7 +812,7 @@
             </div>
           </div>
 
-          <!-- Informações de Contato -->
+
           <div class="w-full lg:w-1/3">
             <div
               class="contact-info-card bg-gray-50 rounded-xl p-6 shadow-lg h-full"
@@ -871,7 +824,6 @@
                 Informações
               </h3>
 
-              <!-- Endereço -->
               <div class="contact-item mb-6">
                 <div class="flex items-start gap-3 mb-4">
                   <i
@@ -899,7 +851,6 @@
                 </a>
               </div>
 
-              <!-- Telefone -->
               <div class="contact-item mb-6">
                 <div class="flex items-center gap-3 mb-2">
                   <i data-lucide="phone" class="text-amber-600 w-5 h-5"></i>
@@ -910,7 +861,6 @@
                 </div>
               </div>
 
-              <!-- Horário -->
               <div class="contact-item">
                 <div class="flex items-start gap-3">
                   <i
@@ -938,11 +888,9 @@
       </div>
     </section>
 
-    <!-- Footer -->
     <footer class="bg-black text-white py-16 border-t border-gray-800">
       <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-          <!-- Brand -->
           <div class="flex flex-col items-start">
             <div
               class="text-3xl font-serif font-bold tracking-widest flex items-center gap-1 mb-6"
@@ -962,8 +910,6 @@
               </a>
             </div>
           </div>
-
-          <!-- Links -->
           <div>
             <h4 class="text-lg font-bold mb-6 text-amber-500">Links Rápidos</h4>
             <ul class="space-y-3 text-gray-400">
@@ -985,7 +931,6 @@
             </ul>
           </div>
 
-          <!-- Contact -->
           <div>
             <h4 class="text-lg font-bold mb-6 text-amber-500">Contato</h4>
             <ul class="space-y-4 text-gray-400">
@@ -1030,3 +975,4 @@
     <script src="/src/animações.js"></script>
   </body>
 </html>
+
