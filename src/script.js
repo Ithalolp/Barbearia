@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("DOM Carregado - Inicializando sistema...");
-
   if (typeof lucide !== "undefined") {
     lucide.createIcons();
   }
@@ -11,12 +9,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const mobileMenu = document.getElementById("mobile-menu");
   const mobileLinks = document.querySelectorAll(".mobile-link");
   const bookingForm = document.getElementById("booking-form");
-  const floatingWhatsapp = document.getElementById("floating-whatsapp");
 
-  if (floatingWhatsapp && typeof WHATSAPP_NUMBER !== "undefined") {
-    floatingWhatsapp.href = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}`;
-    floatingWhatsapp.title = "Fale conosco no WhatsApp";
-    floatingWhatsapp.setAttribute("aria-label", "WhatsApp da Barbearia Soares");
+  if (typeof WHATSAPP_NUMBER !== "undefined") {
+    const floatingWhatsapp = document.getElementById("floating-whatsapp");
+    if (floatingWhatsapp) {
+      floatingWhatsapp.href = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}`;
+      floatingWhatsapp.title = "Fale conosco no WhatsApp";
+      floatingWhatsapp.setAttribute(
+        "aria-label",
+        "WhatsApp da Barbearia Soares"
+      );
+    }
   }
 
   window.addEventListener("scroll", () => {
@@ -62,12 +65,10 @@ document.addEventListener("DOMContentLoaded", function () {
     bookingForm.addEventListener("keydown", function (e) {
       if (e.key === "Enter" && e.target.type !== "submit") {
         e.preventDefault();
-
         const inputs = Array.from(
           bookingForm.querySelectorAll("input, select, textarea")
         );
         const currentIndex = inputs.indexOf(e.target);
-
         if (currentIndex !== -1 && currentIndex < inputs.length - 1) {
           inputs[currentIndex + 1].focus();
         }
@@ -75,53 +76,76 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  function getTodayDate() {
+  function getAppropriateDate(selectedTime = null) {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-    const currentHour = now.getHours();
-
-    if (currentHour < 17) {
-      if (today.getDay() !== 0) {
+    if (!selectedTime) {
+      const currentHour = now.getHours();
+      if (currentHour < 17 && today.getDay() !== 0) {
         return today;
       }
+
+      let nextDate = new Date(today);
+      if (currentHour >= 17) {
+        nextDate.setDate(nextDate.getDate() + 1);
+      }
+      while (nextDate.getDay() === 0) {
+        nextDate.setDate(nextDate.getDate() + 1);
+      }
+      return nextDate;
     }
 
-    let nextDate = new Date(today);
+    try {
+      const [hours, minutes] = selectedTime.split(":").map(Number);
+      const selectedDateTime = new Date(today);
+      selectedDateTime.setHours(hours, minutes, 0, 0);
+      const currentDateTime = new Date();
 
-    if (currentHour >= 17) {
-      nextDate.setDate(nextDate.getDate() + 1);
+      if (selectedDateTime < currentDateTime) {
+        let nextDate = new Date(today);
+        nextDate.setDate(nextDate.getDate() + 1);
+        while (nextDate.getDay() === 0) {
+          nextDate.setDate(nextDate.getDate() + 1);
+        }
+        return nextDate;
+      }
+
+      if (today.getDay() !== 0) {
+        return today;
+      } else {
+        let nextDate = new Date(today);
+        nextDate.setDate(nextDate.getDate() + 1);
+        return nextDate;
+      }
+    } catch (error) {
+      return getAppropriateDate();
     }
-
-    while (nextDate.getDay() === 0) {
-      nextDate.setDate(nextDate.getDate() + 1);
-    }
-
-    return nextDate;
   }
 
   function formatDateForDisplay(date) {
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    let formatted = date.toLocaleDateString("pt-BR", options);
-    formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1);
+    let dateStr;
 
     if (date.toDateString() === today.toDateString()) {
-      return `Hoje, ${formatted}`;
+      dateStr = "Hoje";
     } else if (date.toDateString() === tomorrow.toDateString()) {
-      return `Amanhã, ${formatted}`;
+      dateStr = "Amanhã";
+    } else {
+      const options = {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      };
+      dateStr = date.toLocaleDateString("pt-BR", options);
+      dateStr = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
     }
 
-    return formatted;
+    return dateStr;
   }
 
   function formatDateForSubmit(date) {
@@ -131,8 +155,20 @@ document.addEventListener("DOMContentLoaded", function () {
     return `${year}-${month}-${day}`;
   }
 
+  function formatDateForWhatsApp(date) {
+    const options = {
+      weekday: "long",
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    };
+    const dateStr = date.toLocaleDateString("pt-BR", options);
+    return dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+  }
+
   function formatTimeInput(inputValue) {
     let numbers = inputValue.replace(/\D/g, "");
+
     if (numbers.length === 0) return "";
 
     if (numbers.length > 4) {
@@ -140,12 +176,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (numbers.length <= 2) {
-      return numbers; 
+      return numbers;
     } else if (numbers.length === 3) {
-
       return numbers.substring(0, 2) + ":" + numbers.substring(2, 3);
     } else {
-
       return numbers.substring(0, 2) + ":" + numbers.substring(2, 4);
     }
   }
@@ -168,12 +202,13 @@ document.addEventListener("DOMContentLoaded", function () {
         display: "",
       };
     }
+
     if (time.length === 1) {
-      time = "0" + time + "00"; // 8 -> 08:00
+      time = "0" + time + "00";
     } else if (time.length === 2) {
-      time = time + "00"; // 12 -> 12:00
+      time = time + "00";
     } else if (time.length === 3) {
-      time = time.substring(0, 2) + time.substring(2, 3) + "0"; // 830 -> 08:30
+      time = time.substring(0, 2) + time.substring(2, 3) + "0";
     }
 
     const hours = time.substring(0, 2);
@@ -193,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (hourNum < 0 || hourNum > 23 || minuteNum < 0 || minuteNum > 59) {
       return {
         valid: false,
-        message: "Horário inválido",
+        message: "Horário inválido. Formato correto: HH:MM",
         display: "",
       };
     }
@@ -225,6 +260,8 @@ document.addEventListener("DOMContentLoaded", function () {
       return {
         valid: true,
         formatted: formattedTime,
+        hourNum: hourNum,
+        minuteNum: minuteNum,
         display: `${hourNum}h${minuteNum > 0 ? minuteNum : ""}`,
         warning: "Sugerimos horários cheios ou meia-hora (ex: 9:00, 9:30)",
       };
@@ -233,6 +270,8 @@ document.addEventListener("DOMContentLoaded", function () {
     return {
       valid: true,
       formatted: formattedTime,
+      hourNum: hourNum,
+      minuteNum: minuteNum,
       display: `${hourNum}h${minuteNum > 0 ? minuteNum : ""}`,
     };
   }
@@ -245,10 +284,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     timeInput.value = "";
     timeHidden.value = "";
-
-
     timeInput.placeholder = "Das 8h às 17h";
-
 
     let timeFeedback = document.getElementById("time-feedback");
     if (!timeFeedback) {
@@ -258,31 +294,24 @@ document.addEventListener("DOMContentLoaded", function () {
       timeInput.parentNode.appendChild(timeFeedback);
     }
 
-
     let lastValidTime = "";
-
 
     timeInput.addEventListener("input", function () {
       const cursorPos = this.selectionStart;
       const oldValue = this.value;
 
-
       const formattedValue = formatTimeInput(this.value);
-
 
       if (formattedValue !== this.value) {
         this.value = formattedValue;
-
-
         const diff = formattedValue.length - oldValue.length;
         const newCursorPos = cursorPos + diff;
         this.setSelectionRange(newCursorPos, newCursorPos);
       }
 
-
       updateTimeFeedback(this.value);
+      updateDateBasedOnTime(this.value);
     });
-
 
     timeInput.addEventListener("blur", function () {
       if (!this.value.trim()) return;
@@ -290,23 +319,23 @@ document.addEventListener("DOMContentLoaded", function () {
       const validation = validateAndFormatTime(this.value);
 
       if (validation.valid) {
-  
         if (validation.warning) {
           showTimeFeedback(validation.warning, "warning");
         }
-
 
         this.value = validation.formatted;
         timeHidden.value = validation.formatted;
         lastValidTime = validation.formatted;
 
         updateTimeFeedback(this.value);
+        updateDateBasedOnTime(validation.formatted);
       } else if (validation.suggestion) {
         this.value = validation.suggestion;
         timeHidden.value = validation.suggestion;
         lastValidTime = validation.suggestion;
 
         updateTimeFeedback(this.value);
+        updateDateBasedOnTime(validation.suggestion);
         showTimeFeedback(
           `Horário ajustado para ${validation.suggestion}`,
           "info"
@@ -314,12 +343,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-
     timeInput.addEventListener("focus", function () {
       this.classList.remove("border-red-300", "border-green-300");
       this.classList.add("border-amber-500");
     });
-
 
     function updateTimeFeedback(value) {
       if (!value.trim()) {
@@ -364,7 +391,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-
     function showTimeFeedback(message, type = "info") {
       const tempFeedback = document.createElement("div");
       tempFeedback.className = `text-xs mt-1 font-medium ${
@@ -373,12 +399,10 @@ document.addEventListener("DOMContentLoaded", function () {
       tempFeedback.textContent = message;
       tempFeedback.id = "temp-feedback";
 
-
       const existing = document.getElementById("temp-feedback");
       if (existing) existing.remove();
 
       timeInput.parentNode.appendChild(tempFeedback);
-
 
       setTimeout(() => {
         if (tempFeedback.parentNode) {
@@ -411,6 +435,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("time-input").value = time;
         document.getElementById("time-input").dispatchEvent(new Event("input"));
         document.getElementById("time-input").dispatchEvent(new Event("blur"));
+        updateDateBasedOnTime(time);
       });
       suggestionsContainer.appendChild(button);
     });
@@ -422,15 +447,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!serviceHidden || serviceInputs.length === 0) return;
 
-
     serviceHidden.value = "";
-
 
     serviceInputs.forEach((input) => {
       input.addEventListener("change", function () {
         if (this.checked) {
           serviceHidden.value = this.value;
-
 
           const allLabels = document.querySelectorAll(
             'input[name="service"] + label'
@@ -459,137 +481,152 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function setupPaymentSelection() {
-  const paymentInputs = document.querySelectorAll(
-    'input[name="payment-method"]'
-  );
-  const paymentHidden = document.getElementById("payment-hidden");
-  const pixWarning = document.getElementById("pix-warning");
-  const otherPaymentInfo = document.getElementById("other-payment-info");
-  const pixChaveContainer = document.getElementById("pix-chave-container");
-  const pixChaveDisplay = document.getElementById("pix-chave-display");
-  const copyPixBtn = document.getElementById("copy-pix-btn");
+    const paymentInputs = document.querySelectorAll(
+      'input[name="payment-method"]'
+    );
+    const paymentHidden = document.getElementById("payment-hidden");
+    const pixWarning = document.getElementById("pix-warning");
+    const otherPaymentInfo = document.getElementById("other-payment-info");
+    const pixChaveContainer = document.getElementById("pix-chave-container");
+    const pixChaveDisplay = document.getElementById("pix-chave-display");
+    const copyPixBtn = document.getElementById("copy-pix-btn");
 
-  if (!paymentHidden || paymentInputs.length === 0) return;
+    if (!paymentHidden || paymentInputs.length === 0) return;
 
+    paymentHidden.value = "";
 
-  paymentHidden.value = "";
+    paymentInputs.forEach((input) => {
+      input.addEventListener("change", function () {
+        if (this.checked) {
+          paymentHidden.value = this.value;
 
-  paymentInputs.forEach((input) => {
-    input.addEventListener("change", function () {
-      if (this.checked) {
-        paymentHidden.value = this.value;
+          const allLabels = document.querySelectorAll(
+            'input[name="payment-method"] + label'
+          );
+          allLabels.forEach((label) => {
+            label.classList.remove("border-amber-500", "bg-amber-50");
+            label.classList.add("border-gray-200");
+          });
 
-  
-        const allLabels = document.querySelectorAll(
-          'input[name="payment-method"] + label'
-        );
-        allLabels.forEach((label) => {
-          label.classList.remove("border-amber-500", "bg-amber-50");
-          label.classList.add("border-gray-200");
+          const currentLabel = this.nextElementSibling;
+          if (currentLabel) {
+            currentLabel.classList.add("border-amber-500", "bg-amber-50");
+            currentLabel.classList.remove("border-gray-200");
+          }
+
+          if (this.value === "Pix") {
+            if (pixWarning) {
+              pixWarning.classList.remove("hidden");
+              pixWarning.classList.add("animate-fade-in-soft");
+            }
+            if (otherPaymentInfo) {
+              otherPaymentInfo.classList.add("hidden");
+            }
+            if (pixChaveContainer) {
+              pixChaveContainer.classList.remove("hidden");
+            }
+
+            const pixChaveReal = "0000000000000";
+            if (pixChaveDisplay) {
+              pixChaveDisplay.textContent = pixChaveReal;
+            }
+          } else {
+            if (pixWarning) {
+              pixWarning.classList.add("hidden");
+              pixWarning.classList.remove("animate-fade-in-soft");
+            }
+            if (otherPaymentInfo) {
+              otherPaymentInfo.classList.remove("hidden");
+            }
+            if (pixChaveContainer) {
+              pixChaveContainer.classList.add("hidden");
+            }
+          }
+        }
+      });
+
+      const label = input.nextElementSibling;
+      if (label) {
+        label.addEventListener("click", () => {
+          input.checked = true;
+          input.dispatchEvent(new Event("change"));
         });
-
-        const currentLabel = this.nextElementSibling;
-        if (currentLabel) {
-          currentLabel.classList.add("border-amber-500", "bg-amber-50");
-          currentLabel.classList.remove("border-gray-200");
-        }
-
-        if (this.value === "Pix") {
-          if (pixWarning) {
-            pixWarning.classList.remove("hidden");
-            pixWarning.classList.add("animate-fade-in-soft");
-          }
-          if (otherPaymentInfo) {
-            otherPaymentInfo.classList.add("hidden");
-          }
-          if (pixChaveContainer) {
-            pixChaveContainer.classList.remove("hidden");
-          }
-          
-          const pixChaveReal = "0000000000000";
-          if (pixChaveDisplay) {
-            pixChaveDisplay.textContent = pixChaveReal;
-          }
-        } else {
-          if (pixWarning) {
-            pixWarning.classList.add("hidden");
-            pixWarning.classList.remove("animate-fade-in-soft");
-          }
-          if (otherPaymentInfo) {
-            otherPaymentInfo.classList.remove("hidden");
-          }
-          if (pixChaveContainer) {
-            pixChaveContainer.classList.add("hidden");
-          }
-        }
       }
     });
 
-    const label = input.nextElementSibling;
-    if (label) {
-      label.addEventListener("click", () => {
-        input.checked = true;
-        input.dispatchEvent(new Event("change"));
-      });
-    }
-  });
+    if (copyPixBtn && pixChaveDisplay) {
+      copyPixBtn.addEventListener("click", function () {
+        const pixChave = pixChaveDisplay.textContent;
 
-  if (copyPixBtn && pixChaveDisplay) {
-    copyPixBtn.addEventListener("click", function () {
-      const pixChave = pixChaveDisplay.textContent;
-      
-      if (!pixChave.trim()) {
-        return;
-      }
+        if (!pixChave.trim()) {
+          return;
+        }
 
-      try {
-        navigator.clipboard.writeText(pixChave).then(() => {
+        try {
+          navigator.clipboard.writeText(pixChave).then(() => {
+            const originalText = copyPixBtn.innerHTML;
+            const originalClass = copyPixBtn.className;
+
+            copyPixBtn.innerHTML =
+              '<i data-lucide="check" class="w-4 h-4"></i> Copiado!';
+            copyPixBtn.className = originalClass.replace(
+              "bg-amber-600",
+              "bg-green-600"
+            );
+            copyPixBtn.classList.add("bg-green-600");
+
+            setTimeout(() => {
+              copyPixBtn.innerHTML = originalText;
+              copyPixBtn.className = originalClass;
+            }, 2000);
+          });
+        } catch (err) {
+          const textArea = document.createElement("textarea");
+          textArea.value = pixChave;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textArea);
+
           const originalText = copyPixBtn.innerHTML;
           const originalClass = copyPixBtn.className;
-          
+
           copyPixBtn.innerHTML =
             '<i data-lucide="check" class="w-4 h-4"></i> Copiado!';
-          copyPixBtn.className = originalClass.replace("bg-amber-600", "bg-green-600");
+          copyPixBtn.className = originalClass.replace(
+            "bg-amber-600",
+            "bg-green-600"
+          );
           copyPixBtn.classList.add("bg-green-600");
 
           setTimeout(() => {
             copyPixBtn.innerHTML = originalText;
             copyPixBtn.className = originalClass;
           }, 2000);
-        });
-      } catch (err) {
-        const textArea = document.createElement("textarea");
-        textArea.value = pixChave;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textArea);
-        
-        const originalText = copyPixBtn.innerHTML;
-        const originalClass = copyPixBtn.className;
-        
-        copyPixBtn.innerHTML =
-          '<i data-lucide="check" class="w-4 h-4"></i> Copiado!';
-        copyPixBtn.className = originalClass.replace("bg-amber-600", "bg-green-600");
-        copyPixBtn.classList.add("bg-green-600");
-
-        setTimeout(() => {
-          copyPixBtn.innerHTML = originalText;
-          copyPixBtn.className = originalClass;
-        }, 2000);
-      }
-    });
+        }
+      });
+    }
   }
-}
-  function initBookingSystem() {
-    console.log("Inicializando sistema de agendamento...");
 
+  function updateDateBasedOnTime(timeValue = null) {
     const dateDisplay = document.getElementById("date-display");
     const dateInput = document.getElementById("date");
     const dateContainer = document.getElementById("date-container");
 
     if (dateDisplay && dateInput && dateContainer) {
-      const currentDate = getTodayDate();
+      let currentDate;
+
+      if (timeValue) {
+        const validation = validateAndFormatTime(timeValue);
+        if (validation.valid && validation.formatted) {
+          currentDate = getAppropriateDate(validation.formatted);
+        } else {
+          currentDate = getAppropriateDate();
+        }
+      } else {
+        currentDate = getAppropriateDate();
+      }
+
       const displayText = formatDateForDisplay(currentDate);
       const submitValue = formatDateForSubmit(currentDate);
 
@@ -598,6 +635,10 @@ document.addEventListener("DOMContentLoaded", function () {
       dateContainer.classList.remove("bg-gray-100");
       dateContainer.classList.add("bg-amber-50", "border-amber-200");
     }
+  }
+
+  function initBookingSystem() {
+    updateDateBasedOnTime();
 
     const nameInput = document.getElementById("name");
     if (nameInput) {
@@ -614,10 +655,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     setupServiceSelection();
-
-
     setupPaymentSelection();
-
     setupTimeField();
 
     const observationsInput = document.getElementById("observations");
@@ -626,14 +664,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-
   initBookingSystem();
 
   if (bookingForm) {
     bookingForm.addEventListener("submit", function (e) {
       e.preventDefault();
       e.stopPropagation();
-
 
       const nameInput = document.getElementById("name");
       const serviceHidden = document.getElementById("service-hidden");
@@ -644,7 +680,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const timeInput = document.getElementById("time-input");
       const observationsInput = document.getElementById("observations");
 
-    
       let isValid = true;
       const errors = [];
 
@@ -659,7 +694,6 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!serviceHidden || !serviceHidden.value) {
         isValid = false;
         errors.push("Serviço");
-
         const serviceLabels = document.querySelectorAll(
           'input[name="service"] + label'
         );
@@ -675,11 +709,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
 
-o
       if (!paymentHidden || !paymentHidden.value) {
         isValid = false;
         errors.push("Meio de Pagamento");
-
         const paymentLabels = document.querySelectorAll(
           'input[name="payment-method"] + label'
         );
@@ -694,28 +726,24 @@ o
           label.classList.remove("border-red-500", "ring-2", "ring-red-200");
         });
       }
-
 
       if (paymentHidden && paymentHidden.value === "Pix") {
         if (!pixChaveInput || !pixChaveInput.value.trim()) {
           if (pixChaveInput) {
-            pixChaveInput.value = "0000000000000";
+            pixChaveInput.value = "5588994202290";
           }
         }
       }
-
 
       if (!timeHidden || !timeHidden.value) {
         isValid = false;
         errors.push("Horário");
         if (timeInput) {
           timeInput.classList.add("border-red-500", "ring-2", "ring-red-200");
-
           timeInput.scrollIntoView({ behavior: "smooth", block: "center" });
           timeInput.focus();
         }
       } else {
-
         const validation = validateAndFormatTime(timeHidden.value);
         if (!validation.valid) {
           isValid = false;
@@ -740,7 +768,6 @@ o
         return;
       }
 
-
       const name = nameInput.value.trim();
       const service = serviceHidden.value;
       const paymentMethod = paymentHidden.value;
@@ -754,19 +781,14 @@ o
         ? observationsInput.value.trim()
         : "";
 
+      const dateParts = dateValue.split("-");
+      const whatsappDate = new Date(
+        parseInt(dateParts[0]),
+        parseInt(dateParts[1]) - 1,
+        parseInt(dateParts[2])
+      );
 
-      const dateObj = new Date(dateValue);
-      const dateFormatted = dateObj.toLocaleDateString("pt-BR", {
-        weekday: "long",
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      });
-
-
-      const dateDisplay =
-        dateFormatted.charAt(0).toUpperCase() + dateFormatted.slice(1);
-
+      const dateDisplay = formatDateForWhatsApp(whatsappDate);
 
       const [hours, minutes] = timeValue.split(":");
       const timeDisplay =
@@ -774,13 +796,11 @@ o
           ? `${parseInt(hours)}h`
           : `${parseInt(hours)}h${minutes}`;
 
-
       let message =
         `*AGENDAMENTO - BARBEARIA SOARES*\n\n` +
         `👤 *Cliente:* ${name}\n` +
         `✂️ *Serviço:* ${service}\n` +
         `💳 *Pagamento:* ${paymentMethod}\n`;
-
 
       if (paymentMethod === "Pix" && pixChave) {
         message += `🔑 *Chave Pix:* ${pixChave}\n`;
@@ -789,7 +809,6 @@ o
       message +=
         `📅 *Data:* ${dateDisplay}\n` + `⏰ *Horário:* ${timeDisplay}\n`;
 
-      // Adicionar observações se houver
       if (observations) {
         message += `📝 *Observações:* ${observations}\n`;
       }
@@ -798,29 +817,39 @@ o
         `\n📍 *Local:* R. Padre Cícero, 185 – Centro, Missão Velha - CE\n\n` +
         `_Por favor, confirme a disponibilidade deste horário._`;
 
-
+      // Instruções específicas para cada método de pagamento
       if (paymentMethod === "Pix") {
         message +=
-          `\n\n📋 *INSTRUÇÃO PARA PIX:*\n` +
+          `\n\n📋 *INSTRUÇÕES PARA PAGAMENTO:*\n` +
           `1. Faça o pagamento via Pix para a chave informada\n` +
           `2. Envie o comprovante agora para confirmar seu agendamento\n` +
           `3. Sem comprovante, o agendamento não será confirmado\n` +
           `4. Em caso de não comparecimento, não haverá devolução`;
+      } else if (paymentMethod === "Cartão") {
+        message +=
+          `\n\n📋 *INSTRUÇÕES PARA PAGAMENTO:*\n` +
+          `1. Pagamento com cartão será realizado no local\n` +
+          `2. Aceitamos débito e crédito (todas as bandeiras)\n` +
+          `3. Para agendamentos cancelados com menos de 2 horas de antecedência, será cobrada taxa de 50%\n` +
+          `4. Em caso de não comparecimento, será cobrada taxa de 100%`;
+      } else if (paymentMethod === "Dinheiro") {
+        message +=
+          `\n\n📋 *INSTRUÇÕES PARA PAGAMENTO:*\n` +
+          `1. Pagamento em dinheiro será realizado no local\n` +
+          `2. Por favor, trazer o valor exato ou próximo\n` +
+          `3. Para agendamentos cancelados com menos de 2 horas de antecedência, será cobrada taxa de 50%\n` +
+          `4. Em caso de não comparecimento, será cobrada taxa de 100%`;
       }
-
 
       if (typeof WHATSAPP_NUMBER === "undefined") {
         alert("Erro: Número do WhatsApp não configurado. Contate o suporte.");
         return;
       }
 
-
       const encodedMessage = encodeURIComponent(message);
       const whatsappUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodedMessage}`;
 
-
       const newWindow = window.open(whatsappUrl, "_blank");
-
 
       const submitBtn = this.querySelector('button[type="submit"]');
       if (submitBtn) {
@@ -835,9 +864,7 @@ o
         `;
         submitBtn.disabled = true;
 
-
         setTimeout(() => {
-       
           if (nameInput) {
             nameInput.value = "";
             nameInput.classList.remove(
@@ -847,7 +874,6 @@ o
               "ring-red-200"
             );
           }
-
 
           const serviceInputs = document.querySelectorAll(
             'input[name="service"]'
@@ -871,7 +897,6 @@ o
           if (serviceHidden) {
             serviceHidden.value = "";
           }
-
 
           const paymentInputs = document.querySelectorAll(
             'input[name="payment-method"]'
@@ -907,12 +932,10 @@ o
             otherPaymentInfo.classList.add("hidden");
           }
 
-
           const pixChaveInput = document.getElementById("pix-chave");
           if (pixChaveInput) {
             pixChaveInput.value = "";
           }
-
 
           const timeInputField = document.getElementById("time-input");
           if (timeInputField) {
@@ -929,38 +952,31 @@ o
             timeInputField.classList.add("border-gray-300");
           }
 
-
           const timeFeedback = document.getElementById("time-feedback");
           if (timeFeedback) {
             timeFeedback.textContent = "Digite o horário desejado (8h às 17h)";
             timeFeedback.className = "text-xs mt-1 text-gray-500";
           }
 
-
           if (timeHidden) {
             timeHidden.value = "";
           }
-
 
           if (observationsInput) {
             observationsInput.value = "";
           }
 
- 
           const tempFeedback = document.getElementById("temp-feedback");
           if (tempFeedback) {
             tempFeedback.remove();
           }
 
-
           submitBtn.innerHTML = originalHTML;
           submitBtn.disabled = false;
-
 
           if (nameInput) {
             nameInput.focus();
           }
-
 
           setTimeout(initBookingSystem, 100);
         }, 1500);
@@ -994,8 +1010,4 @@ o
       },
     };
   }
-
-  console.log("✅ Sistema JavaScript inicializado com sucesso!");
 });
-
-
