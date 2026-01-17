@@ -8,15 +8,18 @@ h3,
 h4 {
   font-family: "Playfair Display", serif;
 }
+
 html,
 body {
   max-width: 100%;
   overflow-x: hidden;
   position: relative;
 }
+
 html {
   scroll-behavior: smooth;
 }
+
 .glass-nav {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
@@ -32,7 +35,7 @@ html {
 }
 
 #logo-text {
-  color: #f59e0b !important; /* Amber-500 fixo */
+  color: #f59e0b !important;
 }
 
 @keyframes float {
@@ -56,7 +59,6 @@ html {
 .dark .instagram-logo {
   filter: brightness(0) invert(1);
 }
-
 
 .form-input {
   transition: all 0.2s ease;
@@ -160,6 +162,7 @@ input[type="time"]:focus::-webkit-calendar-picker-indicator {
   color: white;
   border-color: #f59e0b;
 }
+
 .border-green-300 {
   border-color: #86efac !important;
 }
@@ -188,6 +191,7 @@ input[type="time"]:focus::-webkit-calendar-picker-indicator {
 .animate-spin {
   animation: spin 1s linear infinite;
 }
+
 input,
 select,
 textarea {
@@ -206,8 +210,8 @@ textarea {
 #time-input.invalid {
   border-color: #ef4444;
   background-color: #fef2f2;
-  animation: shake 0.5s ease-in-out;
 }
+
 @keyframes shake {
   0%,
   100% {
@@ -231,12 +235,14 @@ textarea {
 ::placeholder {
   opacity: 0.6;
 }
+
 input:focus,
 select:focus {
   outline: none;
   border-color: #f59e0b;
   box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
 }
+
 .validation-hint {
   font-size: 0.75rem;
   margin-top: 0.25rem;
@@ -250,14 +256,17 @@ select:focus {
 .validation-hint.invalid {
   color: #ef4444;
 }
+
 #time-input:placeholder-shown {
-  border-color: #d1d5db; /* gray-300 */
-  background-color: #f9fafb; /* gray-50 */
+  border-color: #d1d5db;
+  background-color: #f9fafb;
 }
+
 #time-input.invalid {
   border-color: #ef4444;
   background-color: #fef2f2;
 }
+
 .payment-card {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -267,16 +276,16 @@ select:focus {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
+
 .payment-icon {
   transition: all 0.3s ease;
 }
 
 .payment-card:hover .payment-icon {
   transform: scale(1.15);
-  background-color: #fef3c7; 
+  background-color: #fef3c7;
 }
 
-/* Badges de pagamento */
 .payment-badge {
   font-size: 0.7rem;
   letter-spacing: 0.05em;
@@ -285,6 +294,7 @@ select:focus {
 .payment-card i {
   display: inline-block;
 }
+
 @media screen and (max-width: 768px) {
   input,
   select,
@@ -292,4 +302,3 @@ select:focus {
     font-size: 16px !important;
   }
 }
-
